@@ -40,20 +40,25 @@
 </template>
 
 <script>
-import { ref, reactive, toRefs } from 'vue'
+import { ref, reactive, toRefs, getCurrentInstance } from 'vue'
 import { Message } from 'element3'
 import qs from 'qs'
 import { onUserLogin } from '../api/user'
+import { useStore } from 'vuex'
 export default {
   name: 'login',
   setup () {
+    const store = useStore()
     const form = ref(null)
+    const { proxy } = getCurrentInstance()
     const state = reactive({
-      loginDialog: ref(false),
+      loginDialog: ref(false), // 按钮加载状态
+      // 数据
       loginForm: {
         username: '',
         password: ''
       },
+      // 表单验证
       rulesLogin: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -66,6 +71,7 @@ export default {
       }
     })
 
+    // 点击登录按钮
     function onSubmitLogin () {
       form.value.validate(async (valid) => {
         if (!valid) {
@@ -85,13 +91,14 @@ export default {
         }
         Message({ message: data.msg, type: 'success', duration: 1300 })
         state.loginDialog = false
+        store.commit('changeUser', data.data)
+        proxy.$root.$router.push('/')
       })
     }
-
     return {
       ...toRefs(state),
       form,
-      onSubmitLogin
+      onSubmitLogin,
     }
   }
 }
