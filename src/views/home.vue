@@ -62,12 +62,11 @@
           </div>
         </div>
 
-        <!-- <BlogList
-            v-for="(blogItem, index) in blogList"
-            :key="index"
-            :blogItem="blogItem"
-            @loadBlogList="loadgetAllBlogList"
-          /> -->
+        <BlogList
+          v-for="(blogItem, index) in blogList"
+          :key="index"
+          :blogItem="blogItem"
+        />
 
         <!-- 开始 loading 加载显示 -->
         <!-- <el-table
@@ -80,10 +79,10 @@
       <!-- 用户内容 -->
       <div v-if="userInfo" class="user_list">
         <div class="my_pohto">
-          <img class="my_pohto_img" src="" />
+          <img class="my_pohto_img" :src="userPhotoAvatar" />
         </div>
-        <!-- <h4 class="nickname">{{ user.nickname }}</h4>
-        <p class="autograph">{{ user.autograph }}</p> -->
+        <h4 class="nickname">{{ user.nickname }}</h4>
+        <p class="autograph">{{ user.autograph }}</p>
       </div>
 
       <!-- 未登录 -->
@@ -92,24 +91,31 @@
           <img
             class="my_pohto_img"
             src="./images/outLogin.jpg"
-            @click="goLogonPage"
+            @click="$router.push('/user/login')"
           />
         </div>
-        <h4 class="nickname" @click="goLogonPage">未登录用户</h4>
-        <p class="autograph" @click="goLogonPage">点击登录</p>
+        <h4 class="nickname" @click="$router.push('/user/login')">
+          未登录用户
+        </h4>
+        <p class="autograph" @click="$router.push('/user/login')">点击登录</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref, computed, onMounted, toRefs } from 'vue'
+import { reactive, ref, onMounted, toRefs, computed } from 'vue'
 import { Message } from 'element3'
 import { onReleaseBlog, getAllBlogList } from '../api/blog'
 import { useStore } from 'vuex'
 import { getUserInfo } from '../api/user'
+import BlogList from '../components/BlogList.vue'
+import url from '../utils/url.js'
 export default {
   name: 'home',
+  components: {
+    BlogList
+  },
   setup () {
     const state = reactive({
       blogText: '', // 发布博客文本框内的文字
@@ -118,9 +124,8 @@ export default {
       upLoadImagesFileArray: [], // 需要上传文件的数组
       imagesList: [], // 需要展示的的图片
       userInfo: useStore().state.userInfo, // 用户信息
+      blogList: [], // 全部博客
     })
-    // let upLoadImagesFileArray = reactive([]) // 需要上传文件的数组
-    // let imagesList = reactive([]) // 需要展示的的图片
     const imgfile = ref(null)
 
     // 当上传文件被改变时
@@ -206,23 +211,34 @@ export default {
     }
 
     // 获取用户信息
-    async function loadgetUserInfo () {
+    onMounted(async () => {
       const { data } = await getUserInfo(state.userInfo.id)
       console.log(data)
       state.user = data.data
-    }
-
-    onMounted(() => {
-      loadgetUserInfo()
     })
 
+    // 获取全部博客
+    onMounted(async () => {
+      const { data } = await getAllBlogList()
+      console.log(data)
+      state.blogList = data.data
+    })
+
+    // 头像地址
+    const userPhotoAvatar = computed(() => {
+      if (state.user.avatar) {
+        return `${url}/userPhoto/${state.user.avatar}`
+      }
+      return ''
+    })
     return {
       ...toRefs(state),
       removeImage,
       upImageFileInputChange,
       clickFileAddImg,
       publishContent,
-      imgfile
+      imgfile,
+      userPhotoAvatar
     }
   }
 }
