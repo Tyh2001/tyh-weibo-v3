@@ -1,7 +1,12 @@
 <template>
-  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+  <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo"
+    mode="horizontal"
+    router
+  >
     <div id="menu">
-      <el-menu-item index="1">
+      <el-menu-item index="/">
         <i class="el-icon-s-home" />
       </el-menu-item>
       <el-menu-item index="2">
@@ -41,6 +46,7 @@ export default {
   top: 0px;
   right: 0px;
   left: 0px;
+  z-index: 300;
   #menu {
     width: 800px;
     margin: auto;

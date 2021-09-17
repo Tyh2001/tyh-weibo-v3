@@ -26,11 +26,11 @@
       <!-- 点赞框 -->
       <div class="fabulous">
         <div class="say" @click="sayChange">
-          <!-- <Tyh-icon size="19" icon="tyh-ui-pinglun-01" /> -->
+          <i class="el-icon-chat-line-round" />
           评论
         </div>
         <div class="good" @click="goodChange">
-          <!-- <Tyh-icon size="21" icon="tyh-ui-dianzan-01" /> -->
+          <i class="el-icon-star-off" />
           点赞
         </div>
       </div>
@@ -40,7 +40,7 @@
 
 <script>
 import { computed } from 'vue'
-import url from '../utils/url'
+import url from '../utils/url.js'
 import { toDates } from '../utils/changeTime.js'
 export default {
   name: 'BlogList',
