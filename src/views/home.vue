@@ -69,11 +69,11 @@
         />
 
         <!-- 开始 loading 加载显示 -->
-        <!-- <el-table
+        <el-table
           v-if="fullscreenLoading"
           id="blogListLoading"
           v-loading="fullscreenLoading"
-        /> -->
+        />
       </div>
 
       <!-- 用户内容 -->
@@ -125,8 +125,9 @@ export default {
       imagesList: [], // 需要展示的的图片
       userInfo: useStore().state.userInfo, // 用户信息
       blogList: [], // 全部博客
+      imgfile: null,
+      fullscreenLoading: false
     })
-    const imgfile = ref(null)
 
     // 当上传文件被改变时
     function upImageFileInputChange (e) {
@@ -141,7 +142,7 @@ export default {
         }
       }
       // 获取到选择文件的长度（数量）
-      const fileLength = imgfile.value.files.length
+      const fileLength = state.imgfile.value.files.length
 
       // 如果需要上传的文件数量小于9才执行循环
       if (state.imagesList.length < 9) {
@@ -149,13 +150,13 @@ export default {
         for (let i = 0; i < fileLength; i++) {
           // 进入循环之后还需要判定如果数组长度不小于9则继续添加 否则跳出循环体
           if (state.imagesList.length < 9) {
-            state.imagesList.push(URL.createObjectURL(imgfile.value.files[i]))
+            state.imagesList.push(URL.createObjectURL(state.imgfile.value.files[i]))
           } else {
             break
           }
         }
         // 清空文本框 防止上传相同内容不触发
-        imgfile.value.value = ''
+        state.imgfile.value.value = ''
         return
       }
       Message.error('最多只能上传9张图片')
@@ -173,7 +174,7 @@ export default {
       // 如果选择图片的场地小于9，则点击可以继续上传
       // 否则点击没有效果
       return state.imagesList.length < 9
-        ? imgfile.value.click()
+        ? state.imgfile.value.click()
         : Message.error('最多只能上传9张图片')
     }
 
@@ -213,15 +214,15 @@ export default {
     // 获取用户信息
     onMounted(async () => {
       const { data } = await getUserInfo(state.userInfo.id)
-      console.log(data)
       state.user = data.data
     })
 
     // 获取全部博客
     onMounted(async () => {
+      state.fullscreenLoading = true
       const { data } = await getAllBlogList()
-      console.log(data)
       state.blogList = data.data
+      state.fullscreenLoading = false
     })
 
     // 头像地址
@@ -231,13 +232,13 @@ export default {
       }
       return ''
     })
+
     return {
       ...toRefs(state),
       removeImage,
       upImageFileInputChange,
       clickFileAddImg,
       publishContent,
-      imgfile,
       userPhotoAvatar
     }
   }
