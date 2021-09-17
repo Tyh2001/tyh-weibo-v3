@@ -13,7 +13,7 @@
           />
 
           <!-- 需要上传的图片展示框 -->
-          <div class="upImageBox">
+          <div class="upImageBox" v-if="imagesList.length">
             <!-- 展示图片的盒子 -->
             <div
               class="item_img_change_box"
@@ -21,19 +21,16 @@
               :key="index"
             >
               <!-- 移除上传图片的按钮 -->
-              <!-- <Tyh-icon icon="tyh-ui-close-01" @click="removeImage(index)" /> -->
+              <i class="el-icon-remove-outline" @click="removeImage(index)" />
               <el-image :src="url" fit="cover" />
             </div>
             <!-- 上传文件的方框 -->
             <div class="item_img_add" @click="clickFileAddImg">
-              <!-- <Tyh-icon
-                  size="26"
-                  :icon="
-                    imagesList.length < 9
-                      ? 'tyh-ui-jihao-01'
-                      : 'tyh-ui-success-01'
-                  "
-                /> -->
+              <i
+                :class="
+                  imagesList.length < 9 ? 'el-icon-plus' : 'el-icon-check'
+                "
+              />
             </div>
           </div>
 
@@ -41,18 +38,13 @@
           <div class="utils-box">
             <!-- 这里可以加入表情和图片插入按钮 -->
             <div>
-              <!-- <Tyh-icon
-                  size="20"
-                  icon="tyh-ui-zhaopian-01"
-                  @click="$refs.imgfile.click()"
-                /> -->
               <i
                 class="el-icon-picture-outline"
                 @click="$refs.imgfile.click()"
               />
               <input
                 ref="imgfile"
-                style="display: none"
+                hidden
                 type="file"
                 accept="image/*"
                 multiple="multiple"
@@ -60,7 +52,13 @@
                 @change="upImageFileInputChange($event)"
               />
             </div>
-            <el-button type="primary">发布</el-button>
+            <el-button
+              type="primary"
+              :loading="state.changeBtnLoading"
+              @click="publishContent"
+            >
+              发布
+            </el-button>
           </div>
         </div>
 
@@ -105,17 +103,112 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
 import { reactive, ref } from 'vue'
+import { Message } from 'element3'
+import { onReleaseBlog, getAllBlogList } from '../api/blog'
 export default {
   name: 'home',
   setup () {
     const state = reactive({
       blogText: '', // 发布博客文本框内的文字
+      changeBtnLoading: ref(false), // 发布按钮禁用状态
     })
+    let upLoadImagesFileArray = reactive([]) // 需要上传文件的数组
+    let imagesList = reactive([]) // 需要展示的的图片
+    const imgfile = ref(null)
+
+    // 当上传文件被改变时
+    function upImageFileInputChange (e) {
+      const filesArr = Array.from(e.target.files) // 将获取到的 files 对象转换为数组形式
+
+      // 将每一项添加到全局数组中
+      for (let i = 0; i < filesArr.length; i++) {
+        if (upLoadImagesFileArray.length < 9) {
+          upLoadImagesFileArray.push(filesArr[i])
+        } else {
+          break
+        }
+      }
+
+      // 获取到选择文件的长度（数量）
+      const fileLength = imgfile.value.files.length
+
+      // 如果需要上传的文件数量小于9才执行循环
+      if (imagesList.length < 9) {
+        for (let i = 0; i < fileLength; i++) {
+          // 进入循环之后还需要判定如果数组长度不小于9则继续添加 否则跳出循环体
+          if (imagesList.length < 9) {
+            imagesList.push(URL.createObjectURL(imgfile.value.files[i]))
+          } else {
+            break
+          }
+        }
+        console.log(imagesList)
+        // 清空文本框 防止上传相同内容不触发
+        imgfile.value.value = ''
+        return
+      }
+      Message.error('最多只能上传9张图片')
+    }
+
+    // 点击移除照片
+    function removeImage (index) {
+      imagesList.splice(index, 1) // 移除需要展示的数组中的图片
+      upLoadImagesFileArray.splice(index, 1) // 移除需要上传数组中的图片
+    }
+
+    // 点击上传文件的方形框位置
+    function clickFileAddImg () {
+      // 跟随在后面的添加按钮
+      // 如果选择图片的场地小于9，则点击可以继续上传
+      // 否则点击没有效果
+      return imagesList.length < 9
+        ? imgfile.value.click()
+        : Message.error('最多只能上传9张图片')
+    }
+
+    // 点击发布的按钮
+    async function publishContent () {
+      // 如果内容为空不能发布
+      if (state.blogText === '') {
+        return Message.error('内容为空不能发布')
+      }
+      state.changeBtnLoading = true
+      // 新建一个 FormData
+      const formData = new FormData()
+
+      // 循环每一个选择的文件 将其添加 append
+      upLoadImagesFileArray.forEach(item => {
+        // 给每一项命名为 blogImages 后面的 [] 必须加
+        formData.append('blogImages[]', item, '.jpg')
+      })
+
+      const { data } = await onReleaseBlog(formData, {
+        // userId: this.userInfo.id,
+        userId: '1',
+        blogText: state.blogText
+      })
+
+      if (data.code === 201) {
+        Message({ message: data.msg, type: 'success' })
+        imagesList = ref([])
+        upLoadImagesFileArray = ref([])
+        state.blogText = ''
+        state.changeBtnLoading = false
+        // loadgetAllBlogList()
+        return
+      }
+      state.changeBtnLoading = false
+    }
 
     return {
-      state
+      state,
+      imgfile,
+      imagesList,
+      removeImage,
+      upImageFileInputChange,
+      clickFileAddImg,
+      publishContent
     }
   }
 }
@@ -163,7 +256,7 @@ export default {
               border-radius: 3px;
             }
             // 选中上传图片上的移除按钮
-            .tyh-icon {
+            .el-icon-remove-outline {
               position: absolute;
               right: 5px;
               top: 5px;
