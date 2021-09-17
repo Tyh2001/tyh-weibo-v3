@@ -1,8 +1,9 @@
 import { createStore } from 'vuex'
+import { setStorage, getStorage, removeStorage } from '../utils/localStorage'
 
 export default createStore({
   state: {
-    mum: 123
+    userInfo: getStorage('virgo_user') || null
   },
   mutations: {
     // 保留用户登录信息

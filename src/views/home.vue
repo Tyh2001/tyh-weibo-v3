@@ -8,7 +8,7 @@
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="state.blogText"
+            v-model="blogText"
             :autosize="{ minRows: 2, maxRows: 7 }"
           />
 
@@ -54,7 +54,7 @@
             </div>
             <el-button
               type="primary"
-              :loading="state.changeBtnLoading"
+              :loading="changeBtnLoading"
               @click="publishContent"
             >
               发布
@@ -70,51 +70,57 @@
           /> -->
 
         <!-- 开始 loading 加载显示 -->
-        <el-table
+        <!-- <el-table
           v-if="fullscreenLoading"
           id="blogListLoading"
           v-loading="fullscreenLoading"
-        />
+        /> -->
       </div>
 
       <!-- 用户内容 -->
-      <div class="user_list">
+      <div v-if="userInfo" class="user_list">
         <div class="my_pohto">
-          <img class="my_pohto_img" :src="userPhotoAvatar" />
+          <img class="my_pohto_img" src="" />
         </div>
         <!-- <h4 class="nickname">{{ user.nickname }}</h4>
-          <p class="autograph">{{ user.autograph }}</p> -->
+        <p class="autograph">{{ user.autograph }}</p> -->
       </div>
 
       <!-- 未登录 -->
-      <!-- <div v-else class="user_list">
-          <div class="my_pohto">
-            <img
-              class="my_pohto_img"
-              src="./images/outLogin.jpg"
-              @click="goLogonPage"
-            />
-          </div>
-          <h4 class="nickname" @click="goLogonPage">未登录用户</h4>
-          <p class="autograph" @click="goLogonPage">点击登录</p>
-        </div> -->
+      <div v-else class="user_list">
+        <div class="my_pohto">
+          <img
+            class="my_pohto_img"
+            src="./images/outLogin.jpg"
+            @click="goLogonPage"
+          />
+        </div>
+        <h4 class="nickname" @click="goLogonPage">未登录用户</h4>
+        <p class="autograph" @click="goLogonPage">点击登录</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed, onMounted, toRefs } from 'vue'
 import { Message } from 'element3'
 import { onReleaseBlog, getAllBlogList } from '../api/blog'
+import { useStore } from 'vuex'
+import { getUserInfo } from '../api/user'
 export default {
   name: 'home',
   setup () {
     const state = reactive({
       blogText: '', // 发布博客文本框内的文字
-      changeBtnLoading: ref(false), // 发布按钮禁用状态
+      changeBtnLoading: false, // 发布按钮禁用状态
+      user: {}, // 用户信息
+      upLoadImagesFileArray: [], // 需要上传文件的数组
+      imagesList: [], // 需要展示的的图片
+      userInfo: useStore().state.userInfo, // 用户信息
     })
-    let upLoadImagesFileArray = reactive([]) // 需要上传文件的数组
-    let imagesList = reactive([]) // 需要展示的的图片
+    // let upLoadImagesFileArray = reactive([]) // 需要上传文件的数组
+    // let imagesList = reactive([]) // 需要展示的的图片
     const imgfile = ref(null)
 
     // 当上传文件被改变时
@@ -123,27 +129,26 @@ export default {
 
       // 将每一项添加到全局数组中
       for (let i = 0; i < filesArr.length; i++) {
-        if (upLoadImagesFileArray.length < 9) {
-          upLoadImagesFileArray.push(filesArr[i])
+        if (state.upLoadImagesFileArray.length < 9) {
+          state.upLoadImagesFileArray.push(filesArr[i])
         } else {
           break
         }
       }
-
       // 获取到选择文件的长度（数量）
       const fileLength = imgfile.value.files.length
 
       // 如果需要上传的文件数量小于9才执行循环
-      if (imagesList.length < 9) {
+      if (state.imagesList.length < 9) {
+        console.log('1')
         for (let i = 0; i < fileLength; i++) {
           // 进入循环之后还需要判定如果数组长度不小于9则继续添加 否则跳出循环体
-          if (imagesList.length < 9) {
-            imagesList.push(URL.createObjectURL(imgfile.value.files[i]))
+          if (state.imagesList.length < 9) {
+            state.imagesList.push(URL.createObjectURL(imgfile.value.files[i]))
           } else {
             break
           }
         }
-        console.log(imagesList)
         // 清空文本框 防止上传相同内容不触发
         imgfile.value.value = ''
         return
@@ -153,8 +158,8 @@ export default {
 
     // 点击移除照片
     function removeImage (index) {
-      imagesList.splice(index, 1) // 移除需要展示的数组中的图片
-      upLoadImagesFileArray.splice(index, 1) // 移除需要上传数组中的图片
+      state.imagesList.splice(index, 1) // 移除需要展示的数组中的图片
+      state.upLoadImagesFileArray.splice(index, 1) // 移除需要上传数组中的图片
     }
 
     // 点击上传文件的方形框位置
@@ -162,7 +167,7 @@ export default {
       // 跟随在后面的添加按钮
       // 如果选择图片的场地小于9，则点击可以继续上传
       // 否则点击没有效果
-      return imagesList.length < 9
+      return state.imagesList.length < 9
         ? imgfile.value.click()
         : Message.error('最多只能上传9张图片')
     }
@@ -178,21 +183,20 @@ export default {
       const formData = new FormData()
 
       // 循环每一个选择的文件 将其添加 append
-      upLoadImagesFileArray.forEach(item => {
+      state.upLoadImagesFileArray.forEach(item => {
         // 给每一项命名为 blogImages 后面的 [] 必须加
         formData.append('blogImages[]', item, '.jpg')
       })
 
       const { data } = await onReleaseBlog(formData, {
-        // userId: this.userInfo.id,
-        userId: '1',
+        userId: state.userInfo.id,
         blogText: state.blogText
       })
 
       if (data.code === 201) {
         Message({ message: data.msg, type: 'success' })
-        imagesList = ref([])
-        upLoadImagesFileArray = ref([])
+        imagesList.value = []
+        upLoadImagesFileArray.value = []
         state.blogText = ''
         state.changeBtnLoading = false
         // loadgetAllBlogList()
@@ -201,14 +205,24 @@ export default {
       state.changeBtnLoading = false
     }
 
+    // 获取用户信息
+    async function loadgetUserInfo () {
+      const { data } = await getUserInfo(state.userInfo.id)
+      console.log(data)
+      state.user = data.data
+    }
+
+    onMounted(() => {
+      loadgetUserInfo()
+    })
+
     return {
-      state,
-      imgfile,
-      imagesList,
+      ...toRefs(state),
       removeImage,
       upImageFileInputChange,
       clickFileAddImg,
-      publishContent
+      publishContent,
+      imgfile
     }
   }
 }
