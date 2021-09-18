@@ -11,6 +11,17 @@
         </div>
 
         <!-- 下拉菜单 -->
+        <el-dropdown v-if="userInfo" trigger="click">
+          <span class="el-dropdown-link">
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>关注</el-dropdown-item>
+            <el-dropdown-item>取消关注</el-dropdown-item>
+            <el-dropdown-item>删除</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <p class="blogText">{{ blogItem.text }}</p>
 
@@ -39,9 +50,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import url from '../utils/url.js'
-import { toDates } from '../utils/changeTime.js'
+import { computed, reactive, toRefs } from 'vue'
+import url from '../utils/url'
+import { toDates } from '../utils/changeTime'
+import { useStore } from 'vuex'
 export default {
   name: 'BlogList',
   props: {
@@ -52,6 +64,10 @@ export default {
     }
   },
   setup (props) {
+    const state = reactive({
+      userInfo: useStore().state.userInfo, // 用户信息
+    })
+
     // 用户头像地址
     const userPhotoAvatar = computed(() => {
       return `${url}/userPhoto/${props.blogItem.avatar}`
@@ -62,13 +78,15 @@ export default {
       return toDates(props.blogItem.release_time)
     }
 
+    // 博客图片地址
     function blogItemImgURL (urlsuffix) {
       return `${url}/blogImg/${urlsuffix}`
     }
     return {
-      userPhotoAvatar,
-      releaseTime,
-      blogItemImgURL
+      ...toRefs(state),
+      userPhotoAvatar, // 用户头像地址
+      releaseTime, // 博客发布的时间
+      blogItemImgURL // 博客图片地址
     }
   }
 }

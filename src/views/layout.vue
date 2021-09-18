@@ -12,7 +12,7 @@
       <el-menu-item index="2">
         <i class="el-icon-star-on" />
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="/setting">
         <i class="el-icon-s-tools" />
       </el-menu-item>
       <el-menu-item index="4">
