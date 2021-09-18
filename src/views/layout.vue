@@ -56,6 +56,6 @@ export default {
   }
 }
 #router_box {
-  margin-top: 60px;
+  margin-top: 56px;
 }
 </style>
