@@ -82,19 +82,6 @@
         <p v-else class="form_item_text">{{ userForm.work }}</p>
       </el-form-item>
 
-      <!-- 生日 -->
-      <el-form-item label="生日">
-        <!-- <el-date-picker
-          v-if="changeUserInfoBloon"
-          v-model="userForm.birthday"
-          type="date"
-          placeholder="选择日期"
-          value-format="yyyy-MM-dd"
-          format="yyyy-MM-dd"
-        />
-        <p v-else class="form_item_text">{{ userForm.birthday }}</p> -->
-      </el-form-item>
-
       <!-- 邮箱 -->
       <el-form-item label="邮箱" prop="mail">
         <el-input
@@ -119,7 +106,7 @@
 <script>
 // 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
 import { getUserInfo, changeUserInfo, changeUserPass, uploadUserPhoto } from '../api/user'
-import { reactive, toRefs, onMounted, computed } from 'vue'
+import { reactive, toRefs, onMounted, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import url from '../utils/url'
 export default {
@@ -133,22 +120,21 @@ export default {
       workList: ['计算机/互联网/通信', '生产/工艺/制造', '金融/银行/投资/保险', '商业/服务业/个体经营', '文化/广告/传媒', '娱乐/艺术/表演', '律师/法务', '教育/培训', '公务员/行政/事业单位', '演员/歌手', '自由职业', '模特', '空姐', '学生', '其他'],
     })
 
+    // 获取用户资料
     onMounted(async () => {
       const { data } = await getUserInfo(state.userInfo.id)
       console.log(data)
       state.userForm = data.data
     })
 
+    // 头像地址
     const userPhotoAvatar = computed(() => {
-      if (state.userForm.avatar) {
-        return `${url}/userPhoto/${state.userForm.avatar}`
-      }
-      return ''
+      return state.userForm.avatar ? `${url}/userPhoto/${state.userForm.avatar}` : ''
     })
 
     return {
       ...toRefs(state),
-      userPhotoAvatar
+      userPhotoAvatar, // 头像地址
     }
   }
 }
