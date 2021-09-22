@@ -44,9 +44,9 @@ export const getFansUserList = data => {
 }
 
 /**
- *
- * @param {} data
- * @returns
+ * 取消关注
+ * @param { object } data 用户 id 和 取消关注人的 id
+ * @returns 提示信息 状态码
  */
 export const deleteFollowUser = data => {
   return require({
