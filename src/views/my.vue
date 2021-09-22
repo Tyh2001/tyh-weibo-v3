@@ -111,7 +111,7 @@ export default {
 
     // 将时间戳转换为正常的时间对象格式
     function registerTime () {
-      return toDates(this.userForm.regis_time)
+      return toDates(state.userForm.regis_time)
     }
 
     // 获取用户信息
