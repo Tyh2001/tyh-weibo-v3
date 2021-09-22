@@ -106,7 +106,7 @@
 <script>
 // 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
 import { getUserInfo, changeUserInfo, changeUserPass, uploadUserPhoto } from '../api/user'
-import { reactive, toRefs, onMounted, computed, ref } from 'vue'
+import { reactive, toRefs, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import url from '../utils/url'
 export default {

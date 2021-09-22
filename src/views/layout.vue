@@ -15,7 +15,7 @@
       <el-menu-item index="/setting">
         <i class="el-icon-s-tools" />
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item :index="'/my/' + userInfo.id">
         <i class="el-icon-user-solid" />
       </el-menu-item>
     </div>
@@ -27,14 +27,18 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { reactive, toRefs } from 'vue'
+import { useStore } from 'vuex'
 export default {
   name: 'layout',
   setup () {
-    let activeIndex = ref('1')
+    const state = reactive({
+      activeIndex: '1',
+      userInfo: useStore().state.userInfo, // 用户信息
+    })
 
     return {
-      activeIndex
+      ...toRefs(state)
     }
   }
 }
