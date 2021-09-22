@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card>
     <h3 class="title">
       {{ changeUserInfoBloon ? "修改资料" : "账号信息设置" }}
     </h3>
@@ -13,48 +13,48 @@
       />
     </div>
 
-    <el-form :model="user" ref="user" label-width="80px">
+    <el-form :model="userForm" ref="user" label-width="80px">
       <!-- 昵称 -->
       <el-form-item label="昵称">
         <el-input
           v-if="changeUserInfoBloon"
-          v-model="user.nickname"
+          v-model="userForm.nickname"
           clearable
           placeholder="编辑昵称"
         />
-        <p v-else class="form_item_text">{{ user.nickname }}</p>
+        <p v-else class="form_item_text">{{ userForm.nickname }}</p>
       </el-form-item>
 
       <!-- 个性签名 -->
       <el-form-item label="个性签名">
         <el-input
           v-if="changeUserInfoBloon"
-          v-model="user.autograph"
+          v-model="userForm.autograph"
           clearable
           placeholder="选择个性签名"
         />
-        <p v-else class="form_item_text">{{ user.autograph }}</p>
+        <p v-else class="form_item_text">{{ userForm.autograph }}</p>
       </el-form-item>
 
       <!-- 性别 -->
       <el-form-item label="性别">
         <el-select
           v-if="changeUserInfoBloon"
-          v-model="user.gender"
+          v-model="userForm.gender"
           placeholder="请选择性别"
         >
           <el-option value="男" />
           <el-option value="女" />
           <el-option value="保密" />
         </el-select>
-        <p v-else class="form_item_text">{{ user.gender }}</p>
+        <p v-else class="form_item_text">{{ userForm.gender }}</p>
       </el-form-item>
 
       <!-- 感情状况 -->
       <el-form-item label="感情状况">
         <el-select
           v-if="changeUserInfoBloon"
-          v-model="user.feeling"
+          v-model="userForm.feeling"
           placeholder="感情状况"
         >
           <el-option
@@ -63,14 +63,14 @@
             :value="feelingItem"
           />
         </el-select>
-        <p v-else class="form_item_text">{{ user.feeling }}</p>
+        <p v-else class="form_item_text">{{ userForm.feeling }}</p>
       </el-form-item>
 
       <!-- 职业 -->
       <el-form-item label="职业">
         <el-select
           v-if="changeUserInfoBloon"
-          v-model="user.work"
+          v-model="userForm.work"
           placeholder="选择职业"
         >
           <el-option
@@ -79,25 +79,65 @@
             :value="workItem"
           />
         </el-select>
-        <p v-else class="form_item_text">{{ user.work }}</p>
+        <p v-else class="form_item_text">{{ userForm.work }}</p>
       </el-form-item>
 
       <!-- 邮箱 -->
       <el-form-item label="邮箱" prop="mail">
         <el-input
           v-if="changeUserInfoBloon"
-          v-model="user.mail"
+          v-model="userForm.mail"
           clearable
           placeholder="选择邮箱"
         />
-        <p v-else class="form_item_text">{{ user.mail }}</p>
+        <p v-else class="form_item_text">{{ userForm.mail }}</p>
       </el-form-item>
     </el-form>
 
-    <el-button type="success">成功按钮</el-button>
+    <el-button
+      :type="changeUserInfoBloon ? 'success' : 'primary'"
+      :loading="changeUserInfoBtnLoading"
+      @click="changeUserInfoBloon ? SaveData() : (changeUserInfoBloon = true)"
+    >
+      {{ changeUserInfoBloon ? "保存资料" : "修改资料" }}
+    </el-button>
   </el-card>
 
-  <el-card class="box-card">
+  <el-card>
+    <h3 class="title">修改密码</h3>
+    <el-form :model="changePass" ref="userPassForm" label-width="80px">
+      <!-- 原始密码 -->
+      <el-form-item label="原始密码" prop="oldPass">
+        <el-input
+          v-model="changePass.oldPass"
+          placeholder="请输入原始密码"
+          show-password
+        />
+      </el-form-item>
+
+      <!-- 新密码 -->
+      <el-form-item label="新密码" prop="newPass1">
+        <el-input
+          v-model="changePass.newPass1"
+          placeholder="请输入新密码"
+          show-password
+        />
+      </el-form-item>
+
+      <!-- 确认密码 -->
+      <el-form-item label="确认密码" prop="newPass2">
+        <el-input
+          v-model="changePass.newPass2"
+          placeholder="确认新密码"
+          show-password
+        />
+      </el-form-item>
+    </el-form>
+
+    <el-button type="success">修改密码</el-button>
+  </el-card>
+
+  <el-card>
     <h3 class="title">其他设置</h3>
     <el-button type="danger">退出登录</el-button>
   </el-card>
@@ -105,10 +145,12 @@
 
 <script>
 // 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
-import { getUserInfo, changeUserInfo, changeUserPass, uploadUserPhoto } from '../api/user'
-import { reactive, toRefs, computed, ref, onMounted } from 'vue'
+import { getUserInfo, changeUserInfo } from '../api/user'
+import { reactive, toRefs, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import url from '../utils/url'
+import qs from 'qs'
+import { Message } from 'element3'
 export default {
   name: 'setting',
   setup () {
@@ -117,23 +159,45 @@ export default {
       changeUserInfoBloon: false, // 展示用户信息和编辑信息的切换状态
       feelingList: ['单身', '已婚', '订婚', '暧昧中', '求交往', '暗恋中', '分居', '离异', '保密'], // 感情状况
       workList: ['计算机/互联网/通信', '生产/工艺/制造', '金融/银行/投资/保险', '商业/服务业/个体经营', '文化/广告/传媒', '娱乐/艺术/表演', '律师/法务', '教育/培训', '公务员/行政/事业单位', '演员/歌手', '自由职业', '模特', '空姐', '学生', '其他'],
-      user: {}, // 个人信息
+      userForm: {}, // 个人信息
+      // 修改密码
+      changePass: {
+        oldPass: '',
+        newPass1: '',
+        newPass2: ''
+      },
+      changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态
     })
 
     // 获取用户资料
     onMounted(async () => {
       const { data } = await getUserInfo(state.userInfo.id)
-      console.log(data)
+      state.userForm = data.data
     })
 
     // 头像地址
     const userPhotoAvatar = computed(() => {
-      return state.user.avatar ? `${url}/userPhoto/${state.user.avatar}` : ''
+      return `${url}/userPhoto/${state.userForm.avatar}`
     })
+
+    // 修改用户资料
+    async function SaveData () {
+      state.changeUserInfoBtnLoading = true
+      const { data } = await changeUserInfo(qs.stringify(state.userForm), state.userInfo.id)
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        state.changeUserInfoBtnLoading = false
+        return
+      }
+      Message({ message: data.msg, type: 'success', duration: 1300 })
+      state.changeUserInfoBloon = false
+      state.changeUserInfoBtnLoading = false
+    }
 
     return {
       ...toRefs(state),
       userPhotoAvatar, // 头像地址
+      SaveData, // 修改资料
     }
   }
 }
@@ -180,13 +244,13 @@ export default {
     margin-bottom: 16px;
   }
 }
-.tyh-card:nth-child(1) {
+.el-card:nth-child(1) {
   margin-top: 50px;
 }
-.tyh-card:nth-child(2) {
+.el-card:nth-child(2) {
   margin-top: 20px;
 }
-.tyh-card:nth-child(3) {
+.el-card:nth-child(3) {
   margin-top: 20px;
 }
 .cropper_img {
