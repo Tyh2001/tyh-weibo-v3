@@ -15,7 +15,7 @@
       <el-menu-item index="/setting">
         <i class="el-icon-s-tools" />
       </el-menu-item>
-      <el-menu-item :index="'/my/' + userInfo.id">
+      <el-menu-item :index="toMyBlogList">
         <i class="el-icon-user-solid" />
       </el-menu-item>
     </div>
@@ -27,18 +27,25 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, getCurrentInstance, computed } from 'vue'
 import { useStore } from 'vuex'
 export default {
   name: 'layout',
   setup () {
+    const { proxy } = getCurrentInstance()
     const state = reactive({
       activeIndex: '1',
       userInfo: useStore().state.userInfo, // 用户信息
     })
 
+    // 点击我的图标
+    const toMyBlogList = computed(() => {
+      return state.userInfo ? '/my/' + state.userInfo.id : '/user/login'
+    })
+
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      toMyBlogList
     }
   }
 }

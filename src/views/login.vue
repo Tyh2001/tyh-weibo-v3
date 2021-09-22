@@ -8,13 +8,18 @@
         :model="loginForm"
         :rules="rulesLogin"
         class="demo-loginForm"
+        @keyup.enter.native="onSubmitLogin()"
       >
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username"></el-input>
+          <el-input v-model="loginForm.username" placeholder="请输入账号" />
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password"></el-input>
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            placeholder="请输入密码"
+          />
         </el-form-item>
 
         <el-form-item>

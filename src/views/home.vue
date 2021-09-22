@@ -198,8 +198,10 @@ export default {
 
     // 获取用户信息
     onMounted(async () => {
-      const { data } = await getUserInfo(state.userInfo.id)
-      state.user = data.data
+      if (state.userInfo) {
+        const { data } = await getUserInfo(state.userInfo.id)
+        state.user = data.data
+      }
     })
 
     // 获取全部博客

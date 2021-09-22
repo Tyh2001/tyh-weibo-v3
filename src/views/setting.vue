@@ -145,7 +145,7 @@
 
   <el-card>
     <h3 class="title">其他设置</h3>
-    <el-button type="danger">退出登录</el-button>
+    <el-button type="danger" @click="outLogin">退出登录</el-button>
   </el-card>
 </template>
 
@@ -156,7 +156,7 @@ import { reactive, toRefs, computed, onMounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import url from '../utils/url'
 import qs from 'qs'
-import { Message } from 'element3'
+import { Message, Msgbox } from 'element3'
 export default {
   name: 'setting',
   setup () {
@@ -210,7 +210,6 @@ export default {
         oldPass: state.changePass.oldPass,
         newPass: state.changePass.newPass2
       }), state.userInfo.id)
-      console.log(data)
       if (data.code !== 201) {
         Message.error({ message: data.msg, duration: 1300 })
         state.changeUserPassBtnLoading = false
@@ -222,11 +221,25 @@ export default {
       store.commit('outLogin')
     }
 
+    // 退出登录
+    function outLogin () {
+      Msgbox.confirm('确定要退出账号吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        Message({ type: 'success', message: '已成功退出账号', duration: 1300 })
+        store.commit('outLogin')
+        proxy.$root.$router.push('/')
+      }).catch(() => { })
+    }
+
     return {
       ...toRefs(state),
       userPhotoAvatar, // 头像地址
       SaveData, // 修改资料
       SaveDataNewPass, // 修改密码
+      outLogin, // 退出登录
     }
   }
 }
