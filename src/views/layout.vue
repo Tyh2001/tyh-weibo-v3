@@ -9,7 +9,7 @@
       <el-menu-item index="/">
         <i class="el-icon-s-home" />
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="/follow">
         <i class="el-icon-star-on" />
       </el-menu-item>
       <el-menu-item index="/setting">

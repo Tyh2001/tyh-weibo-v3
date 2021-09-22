@@ -1,7 +1,11 @@
 <template>
   <div id="BlogList">
     <div class="userPhoto">
-      <img class="photo" :src="userPhotoAvatar" />
+      <img
+        class="photo"
+        :src="userPhotoAvatar"
+        @click="$router.push('/my/' + blogItem.user_id)"
+      />
     </div>
     <div class="blog">
       <div class="blog_info_change">

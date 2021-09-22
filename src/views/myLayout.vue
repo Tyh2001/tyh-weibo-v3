@@ -65,7 +65,7 @@ export default {
       .content_left_size {
         position: fixed;
         width: 200px;
-        top: 60px;
+        top: 57px;
         bottom: 0;
         background: #fff;
         padding-top: 30px;

@@ -42,6 +42,11 @@ const routes = [
           //   component: () => import('@/views/fans')
           // }
         ]
+      },
+      // 我的关注
+      {
+        path: '/follow',
+        component: () => import('../views/follow.vue')
       }
     ]
   }

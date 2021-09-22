@@ -122,7 +122,7 @@ export default {
 
     // 头像地址
     const userPhotoAvatar = computed(() => {
-      return state.userForm.avatar ? `${url}/userPhoto/${state.userForm.avatar}` : ''
+      return `${url}/userPhoto/${state.userForm.avatar}`
     })
 
     // 获取指定用户博客内容
