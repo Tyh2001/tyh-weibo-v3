@@ -214,10 +214,7 @@ export default {
 
     // 头像地址
     const userPhotoAvatar = computed(() => {
-      if (state.user.avatar) {
-        return `${url}/userPhoto/${state.user.avatar}`
-      }
-      return ''
+      return `${url}/userPhoto/${state.user.avatar}` || ''
     })
 
     return {

@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    :default-active="activeIndex"
+    :default-active="$route.path"
     class="el-menu-demo"
     mode="horizontal"
     router
