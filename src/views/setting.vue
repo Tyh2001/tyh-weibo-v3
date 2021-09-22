@@ -134,7 +134,13 @@
       </el-form-item>
     </el-form>
 
-    <el-button type="success">修改密码</el-button>
+    <el-button
+      type="success"
+      :loading="changeUserPassBtnLoading"
+      @click="SaveDataNewPass"
+    >
+      修改密码
+    </el-button>
   </el-card>
 
   <el-card>
@@ -145,8 +151,8 @@
 
 <script>
 // 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
-import { getUserInfo, changeUserInfo } from '../api/user'
-import { reactive, toRefs, computed, onMounted } from 'vue'
+import { getUserInfo, changeUserInfo, changeUserPass } from '../api/user'
+import { reactive, toRefs, computed, onMounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import url from '../utils/url'
 import qs from 'qs'
@@ -154,8 +160,10 @@ import { Message } from 'element3'
 export default {
   name: 'setting',
   setup () {
+    const { proxy } = getCurrentInstance()
+    const store = useStore()
     const state = reactive({
-      userInfo: useStore().state.userInfo, // 用户信息
+      userInfo: store.state.userInfo, // 用户信息
       changeUserInfoBloon: false, // 展示用户信息和编辑信息的切换状态
       feelingList: ['单身', '已婚', '订婚', '暧昧中', '求交往', '暗恋中', '分居', '离异', '保密'], // 感情状况
       workList: ['计算机/互联网/通信', '生产/工艺/制造', '金融/银行/投资/保险', '商业/服务业/个体经营', '文化/广告/传媒', '娱乐/艺术/表演', '律师/法务', '教育/培训', '公务员/行政/事业单位', '演员/歌手', '自由职业', '模特', '空姐', '学生', '其他'],
@@ -167,6 +175,7 @@ export default {
         newPass2: ''
       },
       changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态
+      changeUserPassBtnLoading: false, // 点击修改密码的按钮禁用状态
     })
 
     // 获取用户资料
@@ -194,10 +203,30 @@ export default {
       state.changeUserInfoBtnLoading = false
     }
 
+    // 修改密码
+    async function SaveDataNewPass () {
+      state.changeUserPassBtnLoading = true
+      const { data } = await changeUserPass(qs.stringify({
+        oldPass: state.changePass.oldPass,
+        newPass: state.changePass.newPass2
+      }), state.userInfo.id)
+      console.log(data)
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        state.changeUserPassBtnLoading = false
+        return
+      }
+      Message({ message: data.msg + '，请退出重新登录', type: 'success', duration: 1300 })
+      state.changeUserPassBtnLoading = false
+      proxy.$root.$router.push('/user/login')
+      store.commit('outLogin')
+    }
+
     return {
       ...toRefs(state),
       userPhotoAvatar, // 头像地址
       SaveData, // 修改资料
+      SaveDataNewPass, // 修改密码
     }
   }
 }
