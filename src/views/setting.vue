@@ -13,48 +13,48 @@
       />
     </div>
 
-    <el-form :model="userForm" ref="userForm" label-width="80px">
+    <el-form :model="user" ref="user" label-width="80px">
       <!-- 昵称 -->
       <el-form-item label="昵称">
         <el-input
           v-if="changeUserInfoBloon"
-          v-model="userForm.nickname"
+          v-model="user.nickname"
           clearable
           placeholder="编辑昵称"
         />
-        <p v-else class="form_item_text">{{ userForm.nickname }}</p>
+        <p v-else class="form_item_text">{{ user.nickname }}</p>
       </el-form-item>
 
       <!-- 个性签名 -->
       <el-form-item label="个性签名">
         <el-input
           v-if="changeUserInfoBloon"
-          v-model="userForm.autograph"
+          v-model="user.autograph"
           clearable
           placeholder="选择个性签名"
         />
-        <p v-else class="form_item_text">{{ userForm.autograph }}</p>
+        <p v-else class="form_item_text">{{ user.autograph }}</p>
       </el-form-item>
 
       <!-- 性别 -->
       <el-form-item label="性别">
         <el-select
           v-if="changeUserInfoBloon"
-          v-model="userForm.gender"
+          v-model="user.gender"
           placeholder="请选择性别"
         >
           <el-option value="男" />
           <el-option value="女" />
           <el-option value="保密" />
         </el-select>
-        <p v-else class="form_item_text">{{ userForm.gender }}</p>
+        <p v-else class="form_item_text">{{ user.gender }}</p>
       </el-form-item>
 
       <!-- 感情状况 -->
       <el-form-item label="感情状况">
         <el-select
           v-if="changeUserInfoBloon"
-          v-model="userForm.feeling"
+          v-model="user.feeling"
           placeholder="感情状况"
         >
           <el-option
@@ -63,14 +63,14 @@
             :value="feelingItem"
           />
         </el-select>
-        <p v-else class="form_item_text">{{ userForm.feeling }}</p>
+        <p v-else class="form_item_text">{{ user.feeling }}</p>
       </el-form-item>
 
       <!-- 职业 -->
       <el-form-item label="职业">
         <el-select
           v-if="changeUserInfoBloon"
-          v-model="userForm.work"
+          v-model="user.work"
           placeholder="选择职业"
         >
           <el-option
@@ -79,18 +79,18 @@
             :value="workItem"
           />
         </el-select>
-        <p v-else class="form_item_text">{{ userForm.work }}</p>
+        <p v-else class="form_item_text">{{ user.work }}</p>
       </el-form-item>
 
       <!-- 邮箱 -->
       <el-form-item label="邮箱" prop="mail">
         <el-input
           v-if="changeUserInfoBloon"
-          v-model="userForm.mail"
+          v-model="user.mail"
           clearable
           placeholder="选择邮箱"
         />
-        <p v-else class="form_item_text">{{ userForm.mail }}</p>
+        <p v-else class="form_item_text">{{ user.mail }}</p>
       </el-form-item>
     </el-form>
 
@@ -113,23 +113,22 @@ export default {
   name: 'setting',
   setup () {
     const state = reactive({
-      userForm: {}, // 个人信息
       userInfo: useStore().state.userInfo, // 用户信息
-      changeUserInfoBloon: true, // 展示用户信息和编辑信息的切换状态
+      changeUserInfoBloon: false, // 展示用户信息和编辑信息的切换状态
       feelingList: ['单身', '已婚', '订婚', '暧昧中', '求交往', '暗恋中', '分居', '离异', '保密'], // 感情状况
       workList: ['计算机/互联网/通信', '生产/工艺/制造', '金融/银行/投资/保险', '商业/服务业/个体经营', '文化/广告/传媒', '娱乐/艺术/表演', '律师/法务', '教育/培训', '公务员/行政/事业单位', '演员/歌手', '自由职业', '模特', '空姐', '学生', '其他'],
+      user: {}, // 个人信息
     })
 
     // 获取用户资料
     onMounted(async () => {
       const { data } = await getUserInfo(state.userInfo.id)
       console.log(data)
-      state.userForm = data.data
     })
 
     // 头像地址
     const userPhotoAvatar = computed(() => {
-      return state.userForm.avatar ? `${url}/userPhoto/${state.userForm.avatar}` : ''
+      return state.user.avatar ? `${url}/userPhoto/${state.user.avatar}` : ''
     })
 
     return {
