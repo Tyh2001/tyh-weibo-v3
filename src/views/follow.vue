@@ -43,7 +43,7 @@ import url from '../utils/url'
 import { getFollowAllBlogList } from '../api/blog'
 import BlogList from '../components/BlogList.vue'
 export default {
-  name: 'my',
+  name: 'follow',
   components: {
     BlogList
   },

@@ -13,15 +13,19 @@
             </li>
 
             <!-- 我的主页 -->
-            <li @click="$router.push('/my/' + userInfo.id)">
+            <li @click="$router.push(`/my/${userInfo.id}`)">
               <i class="el-icon-collection-tag" />我的主页
             </li>
 
             <!-- 我的关注 -->
-            <li @click="goMyFollow"><i class="el-icon-user" />我的关注</li>
+            <li @click="$router.push(`/myfollow/${userInfo.id}`)">
+              <i class="el-icon-user" />我的关注
+            </li>
 
             <!-- 我的粉丝 -->
-            <li @click="goMyFans"><i class="el-icon-orange" />我的粉丝</li>
+            <li @click="$router.push(`/fans/${userInfo.id}`)">
+              <i class="el-icon-orange" />我的粉丝
+            </li>
 
             <!-- 设置 -->
             <li @click="$router.push('/setting')">
@@ -40,10 +44,18 @@
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
+import { useStore } from 'vuex'
 export default {
-  name: '',
+  name: 'myLayout',
   setup () {
-    return {}
+    const state = reactive({
+      userInfo: useStore().state.userInfo, // 用户信息
+    })
+
+    return {
+      ...toRefs(state),
+    }
   }
 }
 </script>

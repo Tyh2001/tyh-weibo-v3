@@ -36,7 +36,18 @@ const routes = [
             path: '',
             component: () => import('../views/my.vue'),
             meta: { requiresAuth: true }
-          }
+          },
+          // 我的关注
+          {
+            path: '/myFollow/:id',
+            component: () => import('../views/myFollow.vue')
+          },
+          // 我的粉丝
+          // {
+          //   path: '/fans/:id',
+          //   name: 'fans',
+          //   component: () => import('@/views/fans')
+          // }
         ]
       },
       // 我的关注

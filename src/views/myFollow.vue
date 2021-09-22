@@ -1,0 +1,63 @@
+<template>
+  <div id="myfollow">
+    <template v-if="myFollowUser.length">
+      <!-- <UserList
+        v-for="(myFollowUserItem, index) in myFollowUser"
+        :key="index"
+        :item="myFollowUserItem"
+      /> -->
+    </template>
+
+    <div v-else class="noFans">你还没有关注的人哦～</div>
+  </div>
+</template>
+
+<script>
+import UserList from '../components/UserList.vue'
+import { getFollowUserList } from '../api/follow'
+import { reactive, toRefs, onMounted } from 'vue'
+import qs from 'qs'
+import { useStore } from 'vuex'
+export default {
+  name: 'UserList',
+  components: {
+    UserList
+  },
+  setup () {
+    const state = reactive({
+      userInfo: useStore().state.userInfo, // 用户信息
+      myFollowUser: [], // 我的关注列表
+    })
+
+    onMounted(async () => {
+      const { data } = await getFollowUserList(qs.stringify({ user_id: state.userInfo.id }))
+      console.log(data)
+      state.myFollowUser = data.data
+    })
+
+    return {
+      ...toRefs(state),
+    }
+  }
+}
+</script>
+
+<style lang='less' scoped>
+#myfollow {
+  background: #fff;
+  padding: 15px;
+  box-sizing: border-box;
+  .tyh-crumbs {
+    padding-bottom: 20px;
+  }
+  .noFans {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    user-select: none;
+  }
+}
+</style>
