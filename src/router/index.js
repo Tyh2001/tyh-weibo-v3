@@ -43,11 +43,10 @@ const routes = [
             component: () => import('../views/myFollow.vue')
           },
           // 我的粉丝
-          // {
-          //   path: '/fans/:id',
-          //   name: 'fans',
-          //   component: () => import('@/views/fans')
-          // }
+          {
+            path: '/fans/:id',
+            component: () => import('../views/fans.vue')
+          }
         ]
       },
       // 我的关注
