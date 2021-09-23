@@ -9,6 +9,7 @@
       <el-button
         size="small"
         v-if="showFollowBtn"
+        :loading="followBtnLoading"
         :type="onFollowChange ? 'danger' : 'primary'"
         @click="onFollowChange ? deleteFollowTa() : changeFollowTa()"
       >
@@ -95,7 +96,10 @@ import { useStore } from 'vuex'
 import { toDates } from '../utils/changeTime'
 import url from '../utils/url'
 import { getUserBlogList } from '../api/blog'
+import { onFollowUser, getFollowUserList, deleteFollowUser } from '../api/follow'
 import BlogList from '../components/BlogList.vue'
+import qs from 'qs'
+import { Message } from 'element3'
 export default {
   name: 'my',
   components: {
@@ -107,7 +111,8 @@ export default {
       userForm: {},
       userInfo: useStore().state.userInfo, // 用户信息
       userBlogList: [], // 博客列表
-      onFollowChange: false // 是否关注
+      onFollowChange: false, // 是否关注
+      followBtnLoading: false // 点击关注按钮禁用状态
     })
 
     // 将时间戳转换为正常的时间对象格式
@@ -116,7 +121,7 @@ export default {
     }
 
     // 获取用户信息
-    onMounted(async () => {
+    const loadgetUserInfo = onMounted(async () => {
       const { data } = await getUserInfo(proxy.$root.$route.params.id)
       state.userForm = data.data
     })
@@ -137,11 +142,66 @@ export default {
       return state.userInfo.id.toString() !== proxy.$root.$route.params.id.toString()
     })
 
+    // 获取关注列表展示不同的按钮状态
+    onMounted(() => {
+      loadgetFollowUserList()
+    })
+
+    // 获取我的关注列表
+    async function loadgetFollowUserList () {
+      const { data } = await getFollowUserList(qs.stringify({ user_id: state.userInfo.id }))
+      data.data.forEach(item => {
+        if (item.follower_id.toString() === proxy.$root.$route.params.id.toString()) {
+          state.onFollowChange = true
+        }
+      })
+    }
+
+    // 关注
+    async function changeFollowTa () {
+      state.followBtnLoading = true
+      const { data } = await onFollowUser(qs.stringify({
+        user_id: state.userInfo.id,
+        follower_id: proxy.$root.$route.params.id
+      }))
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        state.followBtnLoading = false
+        return
+      }
+      Message({ message: data.msg, type: 'success', duration: 1300 })
+      state.followBtnLoading = false
+      state.onFollowChange = true
+      loadgetUserInfo()
+      loadgetFollowUserList()
+    }
+
+    // 取消关注
+    async function deleteFollowTa () {
+      state.followBtnLoading = true
+      const { data } = await deleteFollowUser(qs.stringify({
+        user_id: state.userInfo.id,
+        follower_id: proxy.$root.$route.params.id
+      }))
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        state.followBtnLoading = false
+        return
+      }
+      Message({ message: data.msg, type: 'success', duration: 1300 })
+      state.followBtnLoading = false
+      state.onFollowChange = false
+      loadgetUserInfo()
+      loadgetFollowUserList()
+    }
+
     return {
       ...toRefs(state),
       registerTime, // 将时间戳转换为正常的时间对象格式
       userPhotoAvatar, // 头像地址
-      showFollowBtn // 关注展示状态
+      showFollowBtn, // 关注展示状态
+      changeFollowTa, // 关注
+      deleteFollowTa // 取消关注
     }
   }
 }
