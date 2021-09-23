@@ -12,6 +12,7 @@
 
 <script>
 import url from '../utils/url'
+import { getCurrentInstance } from 'vue'
 export default {
   name: 'UserList',
   props: {
@@ -27,13 +28,21 @@ export default {
       default: false
     }
   },
-  setup () {
+  setup (props) {
+    const { proxy } = getCurrentInstance()
     // 头像地址
     function userPhotoAvatar (userPhotoSrc) {
       return `${url}/userPhoto/${userPhotoSrc}`
     }
+
+    // 点击跳转对于的用户首页
+    function toUserBlog () {
+      proxy.$root.$router.push(`/my/${props.isFans ? props.item.user_id : props.item.follower_id}`)
+    }
+
     return {
-      userPhotoAvatar // 头像地址
+      userPhotoAvatar, // 头像地址
+      toUserBlog // 点击跳转对于的用户首页
     }
   }
 }
