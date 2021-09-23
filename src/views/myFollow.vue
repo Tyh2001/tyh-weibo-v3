@@ -1,11 +1,11 @@
 <template>
   <div id="myfollow">
     <template v-if="myFollowUser.length">
-      <!-- <UserList
+      <UserList
         v-for="(myFollowUserItem, index) in myFollowUser"
         :key="index"
         :item="myFollowUserItem"
-      /> -->
+      />
     </template>
 
     <div v-else class="noFans">你还没有关注的人哦～</div>
@@ -19,7 +19,7 @@ import { reactive, toRefs, onMounted } from 'vue'
 import qs from 'qs'
 import { useStore } from 'vuex'
 export default {
-  name: 'UserList',
+  name: 'myFollow',
   components: {
     UserList
   },
@@ -31,10 +31,8 @@ export default {
 
     onMounted(async () => {
       const { data } = await getFollowUserList(qs.stringify({ user_id: state.userInfo.id }))
-      console.log(data)
       state.myFollowUser = data.data
     })
-
     return {
       ...toRefs(state),
     }
@@ -47,9 +45,6 @@ export default {
   background: #fff;
   padding: 15px;
   box-sizing: border-box;
-  .tyh-crumbs {
-    padding-bottom: 20px;
-  }
   .noFans {
     width: 100%;
     height: 200px;

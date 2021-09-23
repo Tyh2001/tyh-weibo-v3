@@ -8,7 +8,6 @@
       {{ isFans ? item.user_nickname : item.follower_nickname }}
     </p>
   </div>
-  <h1>1111</h1>
 </template>
 
 <script>
@@ -29,8 +28,13 @@ export default {
     }
   },
   setup () {
-
-    return {}
+    // 头像地址
+    function userPhotoAvatar (userPhotoSrc) {
+      return `${url}/userPhoto/${userPhotoSrc}`
+    }
+    return {
+      userPhotoAvatar,
+    }
   }
 }
 </script>
