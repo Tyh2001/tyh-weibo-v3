@@ -287,7 +287,7 @@ export default {
   }
 }
 .el-card:nth-child(1) {
-  margin-top: 50px;
+  margin-top: 70px;
 }
 .el-card:nth-child(2) {
   margin-top: 20px;

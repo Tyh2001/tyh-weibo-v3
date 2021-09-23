@@ -6,6 +6,7 @@ import { getStorage } from '../utils/localStorage'
 const routes = [
   {
     path: '/user/login',
+    name: 'login',
     component: () => import('../views/login.vue'),
     meta: { requiresAuth: false }
   },
@@ -16,11 +17,13 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'home',
         component: () => import('../views/home.vue'),
         meta: { requiresAuth: false }
       },
       {
         path: '/setting',
+        name: 'setting',
         component: () => import('../views/setting.vue'),
         meta: { requiresAuth: true }
       },
@@ -34,17 +37,20 @@ const routes = [
           // 我的页面
           {
             path: '',
+            name: 'my',
             component: () => import('../views/my.vue'),
             meta: { requiresAuth: true }
           },
           // 我的关注
           {
             path: '/myFollow/:id',
+            name: 'myFollow',
             component: () => import('../views/myFollow.vue')
           },
           // 我的粉丝
           {
             path: '/fans/:id',
+            name: 'fans',
             component: () => import('../views/fans.vue')
           }
         ]
@@ -52,6 +58,7 @@ const routes = [
       // 我的关注
       {
         path: '/follow',
+        name: 'follow',
         component: () => import('../views/follow.vue'),
         meta: { requiresAuth: true }
       }

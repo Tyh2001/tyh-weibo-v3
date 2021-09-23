@@ -7,29 +7,38 @@
           <h2 class="title">个人主页</h2>
 
           <ul class="list_content">
-            <!-- 首页 -->
-            <li @click="$router.push('/')">
-              <i class="el-icon-position" />返回首页
-            </li>
-
             <!-- 我的主页 -->
-            <li @click="$router.push(`/my/${userInfo.id}`)">
+            <li
+              :style="changeHeigthColorShow('my')"
+              @click="$router.push(`/my/${userInfo.id}`)"
+            >
               <i class="el-icon-collection-tag" />我的主页
             </li>
 
             <!-- 我的关注 -->
-            <li @click="$router.push(`/myfollow/${userInfo.id}`)">
+            <li
+              :style="changeHeigthColorShow('myFollow')"
+              @click="$router.push(`/myfollow/${userInfo.id}`)"
+            >
               <i class="el-icon-user" />我的关注
             </li>
 
             <!-- 我的粉丝 -->
-            <li @click="$router.push(`/fans/${userInfo.id}`)">
+            <li
+              :style="changeHeigthColorShow('fans')"
+              @click="$router.push(`/fans/${userInfo.id}`)"
+            >
               <i class="el-icon-orange" />我的粉丝
             </li>
 
             <!-- 设置 -->
             <li @click="$router.push('/setting')">
               <i class="el-icon-setting" />编辑资料
+            </li>
+
+            <!-- 首页 -->
+            <li @click="$router.push('/')">
+              <i class="el-icon-position" />返回首页
             </li>
           </ul>
         </div>
@@ -44,17 +53,28 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 export default {
   name: 'myLayout',
   setup () {
+    const { proxy } = getCurrentInstance()
     const state = reactive({
       userInfo: useStore().state.userInfo, // 用户信息
     })
 
+    // 高亮显示左侧菜单
+    function changeHeigthColorShow (url) {
+      if (url === proxy.$root.$route.name) {
+        return {
+          color: '#409eff'
+        }
+      }
+    }
+
     return {
       ...toRefs(state),
+      changeHeigthColorShow // 高亮显示左侧菜单
     }
   }
 }
@@ -62,7 +82,6 @@ export default {
 
 <style lang='less' scoped>
 #myIndex {
-  min-height: 100%;
   background: rgb(245, 245, 245);
   #myBlogList {
     width: 800px;
