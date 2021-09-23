@@ -69,7 +69,7 @@ export default {
   },
   setup (props) {
     const state = reactive({
-      userInfo: useStore().state.userInfo, // 用户信息
+      userInfo: useStore().state.userInfo // 用户信息
     })
 
     // 用户头像地址

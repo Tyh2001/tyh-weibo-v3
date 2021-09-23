@@ -52,7 +52,7 @@ export default {
       user: {}, // 用户信息
       fullscreenLoading: false, // 页面加载状态展示
       userInfo: useStore().state.userInfo, // 用户信息
-      blogList: [], // 博客内容
+      blogList: [] // 博客内容
     })
 
     // 获取用户信息
@@ -76,7 +76,7 @@ export default {
 
     return {
       ...toRefs(state),
-      userPhotoAvatar,
+      userPhotoAvatar // 头像地址
     }
   }
 }

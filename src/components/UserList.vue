@@ -33,7 +33,7 @@ export default {
       return `${url}/userPhoto/${userPhotoSrc}`
     }
     return {
-      userPhotoAvatar,
+      userPhotoAvatar // 头像地址
     }
   }
 }

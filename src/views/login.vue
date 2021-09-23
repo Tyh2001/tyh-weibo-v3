@@ -102,8 +102,8 @@ export default {
     }
     return {
       ...toRefs(state),
-      form,
-      onSubmitLogin,
+      form, // dom 节点
+      onSubmitLogin // 点击登录按钮
     }
   }
 }

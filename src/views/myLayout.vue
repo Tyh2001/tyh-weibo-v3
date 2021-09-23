@@ -60,7 +60,7 @@ export default {
   setup () {
     const { proxy } = getCurrentInstance()
     const state = reactive({
-      userInfo: useStore().state.userInfo, // 用户信息
+      userInfo: useStore().state.userInfo // 用户信息
     })
 
     // 高亮显示左侧菜单

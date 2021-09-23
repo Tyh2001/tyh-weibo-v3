@@ -34,7 +34,7 @@ export default {
   setup () {
     const state = reactive({
       userInfo: useStore().state.userInfo, // 用户信息
-      myFansList: [], // 我的关注列表
+      myFansList: [] // 我的关注列表
     })
 
     // 获取我的粉丝列表

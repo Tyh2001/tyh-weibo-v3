@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { Message } from 'element3'
-// import { useStore } from 'vuex'
 import { getStorage } from '../utils/localStorage'
 
 const routes = [
@@ -45,13 +44,15 @@ const routes = [
           {
             path: '/myFollow/:id',
             name: 'myFollow',
-            component: () => import('../views/myFollow.vue')
+            component: () => import('../views/myFollow.vue'),
+            meta: { requiresAuth: true }
           },
           // 我的粉丝
           {
             path: '/fans/:id',
             name: 'fans',
-            component: () => import('../views/fans.vue')
+            component: () => import('../views/fans.vue'),
+            meta: { requiresAuth: true }
           }
         ]
       },

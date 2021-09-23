@@ -175,7 +175,7 @@ export default {
         newPass2: ''
       },
       changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态
-      changeUserPassBtnLoading: false, // 点击修改密码的按钮禁用状态
+      changeUserPassBtnLoading: false // 点击修改密码的按钮禁用状态
     })
 
     // 获取用户资料
@@ -239,7 +239,7 @@ export default {
       userPhotoAvatar, // 头像地址
       SaveData, // 修改资料
       SaveDataNewPass, // 修改密码
-      outLogin, // 退出登录
+      outLogin // 退出登录
     }
   }
 }

@@ -8,6 +8,7 @@
     <p class="followBtn">
       <el-button
         size="small"
+        v-if="showFollowBtn"
         :type="onFollowChange ? 'danger' : 'primary'"
         @click="onFollowChange ? deleteFollowTa() : changeFollowTa()"
       >
@@ -106,7 +107,7 @@ export default {
       userForm: {},
       userInfo: useStore().state.userInfo, // 用户信息
       userBlogList: [], // 博客列表
-      onFollowChange: false, // 是否关注
+      onFollowChange: false // 是否关注
     })
 
     // 将时间戳转换为正常的时间对象格式
@@ -131,10 +132,16 @@ export default {
       state.userBlogList = data.data
     })
 
+    // 关注展示状态
+    const showFollowBtn = computed(() => {
+      return state.userInfo.id.toString() !== proxy.$root.$route.params.id.toString()
+    })
+
     return {
       ...toRefs(state),
-      registerTime,
-      userPhotoAvatar,
+      registerTime, // 将时间戳转换为正常的时间对象格式
+      userPhotoAvatar, // 头像地址
+      showFollowBtn // 关注展示状态
     }
   }
 }

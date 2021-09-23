@@ -27,15 +27,14 @@
 </template>
 
 <script>
-import { reactive, toRefs, getCurrentInstance, computed } from 'vue'
+import { reactive, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 export default {
   name: 'layout',
   setup () {
-    const { proxy } = getCurrentInstance()
     const state = reactive({
       activeIndex: '1',
-      userInfo: useStore().state.userInfo, // 用户信息
+      userInfo: useStore().state.userInfo // 用户信息
     })
 
     // 点击我的图标
@@ -45,7 +44,7 @@ export default {
 
     return {
       ...toRefs(state),
-      toMyBlogList
+      toMyBlogList // 点击我的图标
     }
   }
 }
