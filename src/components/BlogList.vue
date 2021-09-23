@@ -68,7 +68,6 @@ import url from '../utils/url'
 import { toDates } from '../utils/changeTime'
 import { useStore } from 'vuex'
 import { deleteMyBlogList } from '../api/blog'
-// 关注用户 - 取消关注用户
 import { onFollowUser, deleteFollowUser } from '../api/follow'
 import qs from 'qs'
 import { Message, Msgbox } from 'element3'
@@ -81,7 +80,7 @@ export default {
       required: true
     }
   },
-  setup (props) {
+  setup (props, { emit }) {
     const state = reactive({
       userInfo: useStore().state.userInfo, // 用户信息
       upFollowDisabled: false, // 关注按钮的禁用状态
@@ -143,6 +142,7 @@ export default {
       }
       Message({ message: data.msg, type: 'success', duration: 1300 })
       state.delFollowDisabled = false
+      emit('loadBlogList')
     }
 
     // 删除博客
@@ -154,6 +154,7 @@ export default {
       }).then(async () => {
         const { data } = await deleteMyBlogList(props.blogItem.blogId)
         Message({ message: data.msg, type: 'success', duration: 1300 })
+        emit('loadBlogList')
       }).catch(() => {
         Message({ type: 'info', message: '已取消删除', duration: 1300 })
       })

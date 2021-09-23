@@ -80,6 +80,7 @@
         v-for="(blogItem, index) in userBlogList"
         :key="index"
         :blogItem="blogItem"
+        @loadBlogList="loadgetAllBlogList"
       />
     </div>
 
@@ -132,7 +133,7 @@ export default {
     })
 
     // 获取指定用户博客内容
-    onMounted(async () => {
+    const loadgetAllBlogList = onMounted(async () => {
       const { data } = await getUserBlogList(proxy.$root.$route.params.id)
       state.userBlogList = data.data
     })
@@ -201,7 +202,8 @@ export default {
       userPhotoAvatar, // 头像地址
       showFollowBtn, // 关注展示状态
       changeFollowTa, // 关注
-      deleteFollowTa // 取消关注
+      deleteFollowTa, // 取消关注
+      loadgetAllBlogList // 获取指定用户博客内容
     }
   }
 }

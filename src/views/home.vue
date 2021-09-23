@@ -68,6 +68,7 @@
             v-for="(blogItem, index) in blogList"
             :key="index"
             :blogItem="blogItem"
+            @loadBlogList="loadgetAllBlogList"
           />
 
           <!-- 开始 loading 加载显示 -->
@@ -223,7 +224,8 @@ export default {
       upImageFileInputChange, // 当上传文件被改变时
       clickFileAddImg, // 点击上传文件的方形框位置
       publishContent, // 点击发布的按钮
-      userPhotoAvatar // 头像地址
+      userPhotoAvatar, // 头像地址
+      loadgetAllBlogList // 获取全部博客
     }
   }
 }
