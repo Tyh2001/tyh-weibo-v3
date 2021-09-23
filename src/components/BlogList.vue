@@ -20,9 +20,19 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>关注</el-dropdown-item>
-            <el-dropdown-item>取消关注</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-item
+              v-if="followShow"
+              :disabled="upFollowDisabled"
+              @click.native="onFollowTa"
+            >
+              关注
+            </el-dropdown-item>
+            <el-dropdown-item v-if="followShow" @click.native="deleteFollowTa">
+              取消关注
+            </el-dropdown-item>
+            <el-dropdown-item v-if="changeDelete" @click.native="deleteBlog">
+              删除
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -57,6 +67,11 @@ import { computed, reactive, toRefs } from 'vue'
 import url from '../utils/url'
 import { toDates } from '../utils/changeTime'
 import { useStore } from 'vuex'
+import { deleteMyBlogList } from '../api/blog'
+// 关注用户 - 取消关注用户
+import { onFollowUser, deleteFollowUser } from '../api/follow'
+import qs from 'qs'
+import { Message, Msgbox } from 'element3'
 export default {
   name: 'BlogList',
   props: {
@@ -68,7 +83,9 @@ export default {
   },
   setup (props) {
     const state = reactive({
-      userInfo: useStore().state.userInfo // 用户信息
+      userInfo: useStore().state.userInfo, // 用户信息
+      upFollowDisabled: false, // 关注按钮的禁用状态
+      delFollowDisabled: false // 取消关注按钮的禁用状态
     })
 
     // 用户头像地址
@@ -85,11 +102,85 @@ export default {
     function blogItemImgURL (urlsuffix) {
       return `${url}/blogImg/${urlsuffix}`
     }
+
+    // 是否展示关注和取消关注选项
+    const followShow = computed(() => {
+      return props.blogItem.user_id !== state.userInfo.id
+    })
+
+    // 是否显示删除选项
+    const changeDelete = computed(() => {
+      return props.blogItem.user_id === state.userInfo.id
+    })
+
+    // 关注用户
+    async function onFollowTa () {
+      state.upFollowDisabled = true
+      const { data } = await onFollowUser(qs.stringify({
+        user_id: state.userInfo.id,
+        follower_id: props.blogItem.user_id
+      }))
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        state.upFollowDisabled = false
+        return
+      }
+      Message({ message: data.msg, type: 'success', duration: 1300 })
+      state.upFollowDisabled = false
+    }
+
+    // 取消关注用户
+    async function deleteFollowTa () {
+      state.delFollowDisabled = true
+      const { data } = await deleteFollowUser(qs.stringify({
+        user_id: state.userInfo.id,
+        follower_id: props.blogItem.user_id
+      }))
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        state.delFollowDisabled = false
+        return
+      }
+      Message({ message: data.msg, type: 'success', duration: 1300 })
+      state.delFollowDisabled = false
+    }
+
+    // 删除博客
+    function deleteBlog () {
+      Msgbox.confirm('确定删除该条博客吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const { data } = await deleteMyBlogList(props.blogItem.blogId)
+        Message({ message: data.msg, type: 'success', duration: 1300 })
+      }).catch(() => {
+        Message({ type: 'info', message: '已取消删除', duration: 1300 })
+      })
+    }
+
+    // 评论点击
+    function sayChange () {
+      Message({ type: 'info', message: '评论功能正在开发中...', duration: 1300 })
+    }
+
+    // 点击点赞
+    function goodChange () {
+      Message({ type: 'info', message: '点赞功能正在开发中...', duration: 1300 })
+    }
+
     return {
       ...toRefs(state),
       userPhotoAvatar, // 用户头像地址
       releaseTime, // 博客发布的时间
-      blogItemImgURL // 博客图片地址
+      blogItemImgURL, // 博客图片地址
+      followShow, // 是否展示关注和取消关注选项
+      changeDelete, // 是否显示删除选项
+      onFollowTa, // 关注
+      deleteFollowTa, // 取消关注
+      deleteBlog, // 删除博客
+      sayChange, // 评论点击
+      goodChange // 点击点赞
     }
   }
 }
