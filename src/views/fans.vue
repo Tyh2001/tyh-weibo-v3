@@ -42,6 +42,7 @@ export default {
       const { data } = await getFansUserList(qs.stringify({ user_id: state.userInfo.id }))
       state.myFansList = data.data
     })
+
     return {
       ...toRefs(state)
     }

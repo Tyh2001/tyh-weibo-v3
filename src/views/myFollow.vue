@@ -41,6 +41,7 @@ export default {
       const { data } = await getFollowUserList(qs.stringify({ user_id: state.userInfo.id }))
       state.myFollowUser = data.data
     })
+
     return {
       ...toRefs(state)
     }

@@ -10,6 +10,12 @@ const routes = [
     meta: { requiresAuth: false }
   },
   {
+    path: '/user/register',
+    name: 'register',
+    component: () => import('../views/register.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
     path: '/',
     component: () => import('../views/layout.vue'),
     meta: { requiresAuth: false },
