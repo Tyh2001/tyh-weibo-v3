@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.21.4",
+    "cropperjs": "^1.5.12",
     "element3": "^0.0.40",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",

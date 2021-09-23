@@ -4,9 +4,13 @@
       {{ changeUserInfoBloon ? "修改资料" : "账号信息设置" }}
     </h3>
     <div class="user_photo_box">
-      <img class="user_photo" :src="userPhotoAvatar" @click="upFilePhoto" />
+      <img
+        class="user_photo"
+        :src="userPhotoAvatar"
+        @click="$refs.fileInput.click()"
+      />
       <input
-        ref="file_input"
+        ref="fileInput"
         class="up_user_photo"
         type="file"
         @change="onChangeFileInp"
@@ -147,16 +151,41 @@
     <h3 class="title">其他设置</h3>
     <el-button type="danger" @click="outLogin">退出登录</el-button>
   </el-card>
+
+  <!-- 执行头像裁切的对话框 -->
+  <el-dialog
+    title="提示"
+    :visible.sync="CropperImgDialog"
+    width="600px"
+    @opened="dialogOpened"
+    @closed="dialogClosed"
+  >
+    <div>
+      <img class="cropper_img" ref="cropperImg" :src="UploadfileImgUrl" />
+    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="CropperImgDialog = false">取消</el-button>
+      <el-button
+        type="primary"
+        :loading="upImgLoginDialog"
+        @click="ToUploadPhoto"
+      >
+        确定
+      </el-button>
+    </span>
+  </el-dialog>
 </template>
 
 <script>
 // 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
-import { getUserInfo, changeUserInfo, changeUserPass } from '../api/user'
-import { reactive, toRefs, computed, onMounted, getCurrentInstance } from 'vue'
+import { getUserInfo, changeUserInfo, changeUserPass, uploadUserPhoto } from '../api/user'
+import { reactive, toRefs, computed, onMounted, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 import url from '../utils/url'
 import qs from 'qs'
 import { Message, Msgbox } from 'element3'
+import 'cropperjs/dist/cropper.css'
+import Cropper from 'cropperjs'
 export default {
   name: 'setting',
   setup () {
@@ -175,7 +204,11 @@ export default {
         newPass2: ''
       },
       changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态
-      changeUserPassBtnLoading: false // 点击修改密码的按钮禁用状态
+      changeUserPassBtnLoading: false, // 点击修改密码的按钮禁用状态
+      cropper: null, // 头像裁切器实例
+      UploadfileImgUrl: '', // 头像裁切器中图片地址
+      CropperImgDialog: false, // 执行头像裁切的对话框
+      upImgLoginDialog: false // 点击上传头像的按钮禁用状态
     })
 
     // 获取用户资料
@@ -234,12 +267,58 @@ export default {
       }).catch(() => { })
     }
 
+    // 文本框被改变时
+    const fileInput = ref(null)
+    function onChangeFileInp () {
+      // 获取到上传图片的路径
+      state.UploadfileImgUrl = URL.createObjectURL(fileInput.value.files[0])
+      state.CropperImgDialog = true // 展示对话框
+    }
+
+    // 当头像裁切器对话框完全展示时候的回调 获取对话框中的 img 标签 并初始化裁切器
+    const cropperImg = ref(null)
+    function dialogOpened () {
+      state.cropper = new Cropper(cropperImg.value, {
+        aspectRatio: 1 / 1, // 裁切框的比例
+        viewMode: 1, // 裁切框不能移出图片范围
+        dragMode: 'none' // 背景画布禁止移动
+      })
+    }
+
+    // 当头像裁切器对话框完全关闭的时候 销毁裁切器
+    function dialogClosed () {
+      state.cropper.destroy()
+      fileInput.value = ''
+    }
+
+    // 点击上传图片
+    function ToUploadPhoto () {
+      state.upImgLoginDialog = true
+      state.cropper.getCroppedCanvas().toBlob((blob) => {
+        const formData = new FormData()
+        // 这里第三个参数为图片后缀名
+        formData.append('photo', blob, '.jpg')
+        uploadUserPhoto(formData, state.userInfo.id).then(res => {
+          state.userForm.avatar = res.data.data.url
+          Message({ message: '上传头像成功', type: 'success', duration: 1300 })
+          state.CropperImgDialog = false
+          state.upImgLoginDialog = false
+        })
+      })
+    }
+
     return {
       ...toRefs(state),
       userPhotoAvatar, // 头像地址
       SaveData, // 修改资料
       SaveDataNewPass, // 修改密码
-      outLogin // 退出登录
+      outLogin, // 退出登录
+      onChangeFileInp, // 文本框被改变时
+      fileInput, // 文本框 dom 节点
+      dialogOpened, // 当头像裁切器对话框完全展示时候的回调
+      cropperImg, // 裁切器中的图片 dom 节点
+      dialogClosed, // 当头像裁切器对话框完全关闭的时候
+      ToUploadPhoto // 上传文件
     }
   }
 }
