@@ -15,11 +15,10 @@
         </div>
 
         <!-- 下拉菜单 -->
-        <el-dropdown v-if="userInfo" trigger="click">
+        <el-dropdown class="el-dropdown-link" v-if="userInfo">
           <span class="el-dropdown-link">
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
-
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>关注</el-dropdown-item>
             <el-dropdown-item>取消关注</el-dropdown-item>
