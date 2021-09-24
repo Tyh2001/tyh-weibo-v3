@@ -54,7 +54,6 @@ export default {
   name: 'login',
   setup () {
     const store = useStore()
-    const form = ref(null)
     const { proxy } = getCurrentInstance()
     const state = reactive({
       loginDialog: ref(false), // 按钮加载状态
@@ -77,6 +76,7 @@ export default {
     })
 
     // 点击登录按钮
+    const form = ref(null)
     function onSubmitLogin () {
       form.value.validate(async (valid) => {
         if (!valid) {

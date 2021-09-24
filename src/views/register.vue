@@ -3,7 +3,11 @@
     <div id="registerBox">
       <h1 class="title">注册账号</h1>
 
-      <el-form :model="registerForm" :rules="registerRules" ref="registerForm">
+      <el-form
+        :model="registerForm"
+        :rules="registerRules"
+        ref="registerFormDOM"
+      >
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input
@@ -77,14 +81,15 @@
 </template>
 
 <script>
-import { reactive, toRefs, computed } from 'vue'
+import { reactive, toRefs, computed, ref, getCurrentInstance } from 'vue'
 import { Message } from 'element3'
-import { useStore } from 'vuex'
 import { onRegister } from '../api/user'
 import { randomNum } from '../utils/randomNum'
+import qs from 'qs'
 export default {
   name: 'register',
   setup () {
+    const { proxy } = getCurrentInstance()
     const state = reactive({
       captchaCode: '', // 验证码随机数
       registerBtnLoading: false, // 注册按钮禁用状态
@@ -96,6 +101,56 @@ export default {
         mail: '',
         captcha: ''
       },
+      // 注册表单验证
+      registerRules: {
+        // 用户名
+        username: [
+          { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 6, max: 12, message: '账号长度需在 6 到 12 个字符', trigger: 'blur' }
+        ],
+        // 第一遍密码
+        password: [
+          {
+            validator: (rule, value, callback) => {
+              if (value === '') {
+                callback(new Error('请输入密码'))
+              } else {
+                if (this.registerForm.password !== '') {
+                  this.$refs.registerForm.validateField('password2')
+                }
+                callback()
+              }
+            },
+            trigger: 'blur'
+          },
+          { min: 8, max: 20, message: '密码长度需在 8 到 20 个字符', trigger: 'blur' }
+        ],
+        // 第二遍密码
+        password2: [
+          {
+            validator: (rule, value, callback) => {
+              if (value === '') {
+                callback(new Error('请再次输入密码'))
+              } else if (value !== this.registerForm.password) {
+                callback(new Error('两次输入密码不一致!'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'blur'
+          }
+        ],
+        // 邮箱
+        mail: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, message: '邮箱格式不正确', trigger: 'blur' }
+        ],
+        // 验证码
+        captcha: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { min: 2, max: 2, message: '请输入正确验证码', trigger: 'blur' }
+        ]
+      }
     })
 
     // 验证码图片地址
@@ -116,10 +171,37 @@ export default {
       captchaImgURLFn()
     }
 
+    // 注册
+    const registerFormDOM = ref(null)
+    async function onSubmitRegister () {
+      state.registerBtnLoading = true
+      registerForm.value.validate(async (valid) => {
+        const { data } = await onRegister(qs.stringify({
+          username: state.registerForm.username,
+          password: state.registerForm.password,
+          mail: state.registerForm.mail,
+          captcha: state.registerForm.captcha,
+          captchaCode: state.captchaCode
+        }))
+        console.log(data)
+        if (data.code !== 201) {
+          Message.error({ message: data.msg, duration: 1300 })
+          if (data.msg === '验证码错误') {
+            state.captchaCode = randomNum(15, 1)
+          }
+          return
+        }
+        Message({ message: data.msg, type: 'success', duration: 1300 })
+        proxy.$root.$router.push('/user/login')
+      })
+    }
+
     return {
       ...toRefs(state),
       captchaImgURL, // 验证码随机地址
       changeCaptchaImg, // 点击切换新的验证码
+      onSubmitRegister, // 注册
+      registerFormDOM // 表单 dom 节点
     }
   }
 }
