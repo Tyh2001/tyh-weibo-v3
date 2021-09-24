@@ -37,11 +37,9 @@
 
 <script>
 import { reactive, toRefs, onMounted, computed } from 'vue'
-import { getUserInfo } from '../api/user'
 import { useStore } from 'vuex'
-import url from '../utils/url'
-import { getFollowAllBlogList } from '../api/blog'
-import BlogList from '../components/BlogList.vue'
+import BlogList from '../../components/BlogList.vue'
+import userModular from './src/user'
 export default {
   name: 'follow',
   components: {
@@ -56,22 +54,17 @@ export default {
     })
 
     // 获取用户信息
-    onMounted(async () => {
-      const { data } = await getUserInfo(state.userInfo.id)
-      state.user = data.data
-    })
+    const { loadgetUserInfo } = userModular(state)
 
     // 头像地址
-    const userPhotoAvatar = computed(() => {
-      return `${url}/userPhoto/${state.user.avatar}`
-    })
+    const { userPhotoAvatar } = userModular(state)
 
     // 获取指定用户博客内容
-    onMounted(async () => {
-      state.fullscreenLoading = true
-      const { data } = await getFollowAllBlogList(state.userInfo.id)
-      state.blogList = data.data
-      state.fullscreenLoading = false
+    const { loadgetFollowAllBlogList } = userModular(state)
+
+    onMounted(() => {
+      loadgetUserInfo()
+      loadgetFollowAllBlogList()
     })
 
     return {

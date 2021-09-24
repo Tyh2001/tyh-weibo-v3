@@ -66,7 +66,7 @@ const routes = [
       {
         path: '/follow',
         name: 'follow',
-        component: () => import('../views/follow.vue'),
+        component: () => import('../views/follow/index.vue'),
         meta: { requiresAuth: true }
       }
     ]
