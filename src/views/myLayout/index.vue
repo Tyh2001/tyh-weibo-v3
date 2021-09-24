@@ -53,19 +53,20 @@
 </template>
 
 <script>
-import { reactive, toRefs, getCurrentInstance } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 export default {
   name: 'myLayout',
   setup () {
-    const { proxy } = getCurrentInstance()
+    const route = useRoute()
     const state = reactive({
       userInfo: useStore().state.userInfo // 用户信息
     })
 
     // 高亮显示左侧菜单
     function changeHeigthColorShow (url) {
-      if (url === proxy.$root.$route.name) {
+      if (url === route.name) {
         return {
           color: '#409eff'
         }

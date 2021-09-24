@@ -36,7 +36,7 @@ const routes = [
       {
         path: '/my/:id',
         redirect: '@/views/my',
-        component: () => import('../views/myLayout.vue'),
+        component: () => import('../views/myLayout/index.vue'),
         meta: { requiresAuth: true },
         children: [
           // 我的页面
