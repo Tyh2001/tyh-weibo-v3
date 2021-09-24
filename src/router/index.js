@@ -32,7 +32,8 @@ const routes = [
       {
         path: '/setting',
         name: 'setting',
-        component: () => import('../views/setting.vue'),
+        // component: () => import('../views/pages/setting.vue'),
+        component: () => import('../views/setting/index.vue'),
         meta: { requiresAuth: true }
       },
       // 我的页面先加载模板

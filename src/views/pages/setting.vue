@@ -178,10 +178,10 @@
 
 <script>
 // 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
-import { getUserInfo, changeUserInfo, changeUserPass, uploadUserPhoto } from '../api/user'
+import { getUserInfo, changeUserInfo, changeUserPass, uploadUserPhoto } from '../../../api/user'
 import { reactive, toRefs, computed, onMounted, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
-import url from '../utils/url'
+import url from '../../../utils/url'
 import qs from 'qs'
 import { Message, Msgbox } from 'element3'
 import 'cropperjs/dist/cropper.css'
