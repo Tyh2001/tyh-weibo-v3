@@ -187,7 +187,6 @@ export default {
         captcha: state.registerForm.captcha,
         captchaCode: state.captchaCode
       }))
-      console.log(data)
       if (data.code !== 201) {
         Message.error({ message: data.msg, duration: 1300 })
         if (data.msg === '验证码错误') {

@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, onMounted, computed, getCurrentInstance } from 'vue'
+import { reactive, toRefs, onMounted, computed, getCurrentInstance, watch } from 'vue'
 import { getUserInfo } from '../api/user'
 import { useStore } from 'vuex'
 import { toDates } from '../utils/changeTime'
@@ -196,6 +196,32 @@ export default {
       loadgetFollowUserList()
     }
 
+    // 去粉丝页面
+    function goFansWebList () {
+      if (state.userInfo.id.toString() === proxy.$root.$route.params.id.toString()) {
+        proxy.$root.$router.push('/fans/' + state.userInfo.id)
+        return
+      }
+      Message.error({ message: '不能查看他人粉丝列表', duration: 1300 })
+    }
+    // 去关注页面
+    function goFollowsWebList () {
+      if (state.userInfo.id.toString() === proxy.$root.$route.params.id.toString()) {
+        proxy.$root.$router.push('/myfollow/' + state.userInfo.id)
+        return
+      }
+      Message.error({ message: '不能查看他人关注列表', duration: 1300 })
+    }
+
+    // 监视路由的变化，如果发生变化就重新加载内容
+    // 因为这里防止进入其他人的主页时候 再点击自己的博客不发生变化的问题
+    watch(() => proxy.$root.$route, (count, prevCount) => {
+      if (proxy.$root.$route.params.id) {
+        loadgetUserInfo()
+        loadgetAllBlogList()
+      }
+    })
+
     return {
       ...toRefs(state),
       registerTime, // 将时间戳转换为正常的时间对象格式
@@ -203,7 +229,9 @@ export default {
       showFollowBtn, // 关注展示状态
       changeFollowTa, // 关注
       deleteFollowTa, // 取消关注
-      loadgetAllBlogList // 获取指定用户博客内容
+      loadgetAllBlogList, // 获取指定用户博客内容
+      goFansWebList, // 去粉丝页面
+      goFollowsWebList // 去关注页面
     }
   }
 }
