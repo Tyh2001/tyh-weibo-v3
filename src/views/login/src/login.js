@@ -4,10 +4,20 @@ import { onUserLogin } from '../../../api/user'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
+/**
+ * 登录页面点击登录按钮登录模块
+ * @param { dom } form dom 节点
+ * @param { object } state 数据
+ * 
+ * 1. 点击登录按钮
+ * 
+ * @returns Fn
+ */
 export default function (form, state) {
   const store = useStore()
   const router = useRouter()
 
+  // 点击登录按钮
   function onLogin () {
     form.value.validate(async (valid) => {
       if (!valid) {

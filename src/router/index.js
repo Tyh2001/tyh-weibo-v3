@@ -24,7 +24,8 @@ const routes = [
       {
         path: '',
         name: 'home',
-        component: () => import('../views/home.vue'),
+        // component: () => import('../views/pages/home.vue'),
+        component: () => import('../views/home/index.vue'),
         meta: { requiresAuth: false }
       },
       {

@@ -11,7 +11,11 @@
         @keyup.enter.native="onSubmitLogin()"
       >
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" placeholder="请输入账号" />
+          <el-input
+            v-model="loginForm.username"
+            placeholder="请输入账号"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item prop="password">
@@ -19,6 +23,7 @@
             v-model="loginForm.password"
             type="password"
             placeholder="请输入密码"
+            clearable
           />
         </el-form-item>
 
@@ -42,7 +47,7 @@
 
 <script>
 import { ref, reactive, toRefs } from 'vue'
-import onSubmitLogin from './src'
+import onSubmitLogin from './src/login.js'
 export default {
   name: 'login',
   setup () {
