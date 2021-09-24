@@ -204,6 +204,7 @@ export default {
       }
       Message.error({ message: '不能查看他人粉丝列表', duration: 1300 })
     }
+
     // 去关注页面
     function goFollowsWebList () {
       if (state.userInfo.id.toString() === proxy.$root.$route.params.id.toString()) {
