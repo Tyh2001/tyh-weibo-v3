@@ -18,7 +18,8 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('../views/layout.vue'),
+    // component: () => import('../views/pages/layout.vue'),
+    component: () => import('../views/layout/index.vue'),
     meta: { requiresAuth: false },
     children: [
       {
