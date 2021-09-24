@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 import { Message } from 'element3'
 import qs from 'qs'
 import { onUserLogin } from '../../../api/user'
