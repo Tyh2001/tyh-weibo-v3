@@ -84,8 +84,8 @@
 <script>
 import { reactive, toRefs, computed, ref, getCurrentInstance } from 'vue'
 import { Message } from 'element3'
-import { onRegister } from '../api/user'
-import { randomNum } from '../utils/randomNum'
+import { onRegister } from '../../api/user'
+import { randomNum } from '../../utils/randomNum'
 import qs from 'qs'
 export default {
   name: 'register',
@@ -219,7 +219,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("./images/login.jpg") no-repeat center;
+  background: url("../login/images/login.jpg") no-repeat center;
   background-size: cover;
   #registerBox {
     background: #fff;

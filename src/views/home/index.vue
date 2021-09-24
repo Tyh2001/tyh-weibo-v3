@@ -93,7 +93,7 @@
           <div class="my_pohto">
             <img
               class="my_pohto_img"
-              src="../images/outLogin.jpg"
+              src="./images/outLogin.jpg"
               @click="$router.push('/user/login')"
             />
           </div>

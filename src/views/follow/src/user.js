@@ -3,7 +3,16 @@ import { computed } from 'vue'
 import url from '../../../utils/url'
 import { getFollowAllBlogList } from '../../../api/blog'
 
-
+/**
+ * 关注页面模块
+ * @param { object } state 数据
+ * 
+ * 1. 获取用户信息
+ * 2. 头像地址
+ * 3. 获取指定用户博客内容
+ * 
+ * @returns Fn
+ */
 export default function (state) {
   // 获取用户信息
   async function loadgetUserInfo () {

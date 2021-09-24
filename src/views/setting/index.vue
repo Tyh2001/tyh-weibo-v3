@@ -177,13 +177,11 @@
 </template>
 
 <script>
-// 获取用户信息 - 修改用户资料 - 修改密码 - 上传头像
 import { uploadUserPhoto } from '../../api/user'
 import { reactive, toRefs, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import 'cropperjs/dist/cropper.css'
 import Cropper from 'cropperjs'
-
 import userModular from './src/user'
 export default {
   name: 'setting',

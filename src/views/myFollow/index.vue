@@ -20,11 +20,10 @@
 </template>
 
 <script>
-import UserList from '../components/UserList.vue'
-import { getFollowUserList } from '../api/follow'
+import UserList from '../../components/UserList.vue'
 import { reactive, toRefs, onMounted } from 'vue'
-import qs from 'qs'
 import { useStore } from 'vuex'
+import userModular from './src/user'
 export default {
   name: 'myFollow',
   components: {
@@ -37,9 +36,9 @@ export default {
     })
 
     // 获取我的关注列表
-    onMounted(async () => {
-      const { data } = await getFollowUserList(qs.stringify({ user_id: state.userInfo.id }))
-      state.myFollowUser = data.data
+    const { loadgetFollowUserList } = userModular(state)
+    onMounted(() => {
+      loadgetFollowUserList()
     })
 
     return {

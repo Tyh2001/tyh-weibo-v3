@@ -243,7 +243,7 @@ export default {
   width: 585px;
   min-height: 220px;
   padding-bottom: 12px;
-  background: url("./images/img.png") no-repeat center;
+  background: url("./images/banner.png") no-repeat center;
   background-size: cover;
   border-radius: 5px;
   padding: 24px;

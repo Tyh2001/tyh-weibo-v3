@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/user/register',
     name: 'register',
-    component: () => import('../views/register.vue'),
+    component: () => import('../views/register/index.vue'),
     meta: { requiresAuth: false }
   },
   {
@@ -43,14 +43,14 @@ const routes = [
           {
             path: '',
             name: 'my',
-            component: () => import('../views/my.vue'),
+            component: () => import('../views/my/index.vue'),
             meta: { requiresAuth: true }
           },
           // 我的关注
           {
             path: '/myFollow/:id',
             name: 'myFollow',
-            component: () => import('../views/myFollow.vue'),
+            component: () => import('../views/myFollow/index.vue'),
             meta: { requiresAuth: true }
           },
           // 我的粉丝
