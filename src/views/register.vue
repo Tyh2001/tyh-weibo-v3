@@ -7,6 +7,7 @@
         :model="registerForm"
         :rules="registerRules"
         ref="registerFormDOM"
+        label-width="auto"
       >
         <!-- 用户名 -->
         <el-form-item prop="username">
@@ -174,26 +175,31 @@ export default {
     // 注册
     const registerFormDOM = ref(null)
     async function onSubmitRegister () {
+      // registerFormDOM.value.validate(async (valid) => {
+      //   if (!valid) {
+      //     return
+      //   }
       state.registerBtnLoading = true
-      registerForm.value.validate(async (valid) => {
-        const { data } = await onRegister(qs.stringify({
-          username: state.registerForm.username,
-          password: state.registerForm.password,
-          mail: state.registerForm.mail,
-          captcha: state.registerForm.captcha,
-          captchaCode: state.captchaCode
-        }))
-        console.log(data)
-        if (data.code !== 201) {
-          Message.error({ message: data.msg, duration: 1300 })
-          if (data.msg === '验证码错误') {
-            state.captchaCode = randomNum(15, 1)
-          }
-          return
+      const { data } = await onRegister(qs.stringify({
+        username: state.registerForm.username,
+        password: state.registerForm.password,
+        mail: state.registerForm.mail,
+        captcha: state.registerForm.captcha,
+        captchaCode: state.captchaCode
+      }))
+      console.log(data)
+      if (data.code !== 201) {
+        Message.error({ message: data.msg, duration: 1300 })
+        if (data.msg === '验证码错误') {
+          state.captchaCode = randomNum(15, 1)
         }
-        Message({ message: data.msg, type: 'success', duration: 1300 })
-        proxy.$root.$router.push('/user/login')
-      })
+        state.registerBtnLoading = false
+        return
+      }
+      state.registerBtnLoading = false
+      Message({ message: data.msg, type: 'success', duration: 1300 })
+      proxy.$root.$router.push('/user/login')
+      // })
     }
 
     return {
