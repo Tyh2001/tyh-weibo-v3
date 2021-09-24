@@ -6,7 +6,6 @@ const routes = [
   {
     path: '/user/login',
     name: 'login',
-    // component: () => import('../views/pages/login.vue'),
     component: () => import('../views/login/index.vue'),
     meta: { requiresAuth: false }
   },
@@ -18,21 +17,18 @@ const routes = [
   },
   {
     path: '/',
-    // component: () => import('../views/pages/layout.vue'),
     component: () => import('../views/layout/index.vue'),
     meta: { requiresAuth: false },
     children: [
       {
         path: '',
         name: 'home',
-        // component: () => import('../views/pages/home.vue'),
         component: () => import('../views/home/index.vue'),
         meta: { requiresAuth: false }
       },
       {
         path: '/setting',
         name: 'setting',
-        // component: () => import('../views/pages/setting.vue'),
         component: () => import('../views/setting/index.vue'),
         meta: { requiresAuth: true }
       },
@@ -61,7 +57,7 @@ const routes = [
           {
             path: '/fans/:id',
             name: 'fans',
-            component: () => import('../views/fans.vue'),
+            component: () => import('../views/fans/index.vue'),
             meta: { requiresAuth: true }
           }
         ]

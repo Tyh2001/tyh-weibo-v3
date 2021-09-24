@@ -21,11 +21,10 @@
 </template>
 
 <script>
-import UserList from '../components/UserList.vue'
-import { getFansUserList } from '../api/follow'
+import UserList from '../../components/UserList.vue'
 import { reactive, toRefs, onMounted } from 'vue'
-import qs from 'qs'
 import { useStore } from 'vuex'
+import userModular from './src/user'
 export default {
   name: 'fans',
   components: {
@@ -38,9 +37,9 @@ export default {
     })
 
     // 获取我的粉丝列表
-    onMounted(async () => {
-      const { data } = await getFansUserList(qs.stringify({ user_id: state.userInfo.id }))
-      state.myFansList = data.data
+    const { loadgetFansUserList } = userModular(state)
+    onMounted(() => {
+      loadgetFansUserList()
     })
 
     return {
