@@ -8,7 +8,7 @@
         :model="loginForm"
         :rules="rulesLogin"
         class="demo-loginForm"
-        @keyup.enter.native="onSubmitLogin()"
+        @keyup.enter.native="onLogin(form)"
       >
         <el-form-item prop="username">
           <el-input
@@ -51,7 +51,7 @@
 
 <script>
 import { ref, reactive, toRefs } from 'vue'
-import onSubmitLogin from './src/login'
+import loginModular from './src/login'
 export default {
   name: 'login',
   setup () {
@@ -77,7 +77,7 @@ export default {
 
     // 点击登录按钮
     const form = ref(null)
-    const { onLogin } = onSubmitLogin(state)
+    const { onLogin } = loginModular(state)
 
     return {
       ...toRefs(state),

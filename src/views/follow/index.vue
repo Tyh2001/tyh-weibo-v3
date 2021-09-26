@@ -19,17 +19,7 @@
         </div>
 
         <!-- 用户内容 -->
-        <div class="user_list">
-          <div class="my_pohto">
-            <img
-              class="my_pohto_img"
-              :src="userPhotoAvatar"
-              @click="$router.push('/my/' + userInfo.id)"
-            />
-          </div>
-          <h4 class="nickname">{{ user.nickname }}</h4>
-          <p class="autograph">{{ user.autograph }}</p>
-        </div>
+        <UserInfo :user="user" :userInfo="userInfo" />
       </div>
     </div>
   </div>
@@ -40,10 +30,12 @@ import { reactive, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '../../components/BlogList.vue'
 import userModular from './src/user'
+import UserInfo from '../home/components/UserInfo.vue'
 export default {
   name: 'follow',
   components: {
-    BlogList
+    BlogList,
+    UserInfo
   },
   setup () {
     const state = reactive({
@@ -95,41 +87,6 @@ export default {
         #blogListLoading {
           width: 585px;
           height: 300px;
-        }
-      }
-      .user_list {
-        border-radius: 8px;
-        width: 370px;
-        padding: 0 20px;
-        box-sizing: border-box;
-        height: 300px;
-        background: #fff;
-        box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-        .my_pohto {
-          width: 90px;
-          margin: auto;
-          margin-top: -60px;
-          cursor: pointer;
-          .my_pohto_img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-          }
-        }
-        .nickname {
-          line-height: 30px;
-          color: #333;
-          font-size: 18px;
-          text-align: center;
-          cursor: pointer;
-        }
-        .autograph {
-          font-size: 14px;
-          color: #161616;
-          text-align: center;
-          margin-top: 6px;
-          cursor: pointer;
         }
       }
     }

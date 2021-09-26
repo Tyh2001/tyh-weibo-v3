@@ -80,34 +80,10 @@
         </div>
 
         <!-- 用户内容 -->
-        <div v-if="userInfo" class="user_list">
-          <div class="my_pohto">
-            <img
-              class="my_pohto_img"
-              :src="userPhotoAvatar"
-              @click="$router.push('/my/' + userInfo.id)"
-            />
-          </div>
-          <h4 class="nickname" @click="$router.push('/my/' + userInfo.id)">
-            {{ user.nickname }}
-          </h4>
-          <p class="autograph">{{ user.autograph }}</p>
-        </div>
+        <UserInfo v-if="userInfo" :user="user" :userInfo="userInfo" />
 
         <!-- 未登录 -->
-        <div v-else class="user_list">
-          <div class="my_pohto">
-            <img
-              class="my_pohto_img"
-              src="./images/outLogin.jpg"
-              @click="$router.push('/user/login')"
-            />
-          </div>
-          <h4 class="nickname" @click="$router.push('/user/login')">
-            未登录用户
-          </h4>
-          <p class="autograph" @click="$router.push('/user/login')">点击登录</p>
-        </div>
+        <UserInfo v-else :logBoolean="false" />
       </div>
     </div>
   </div>
@@ -117,12 +93,14 @@
 import { reactive, onMounted, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '../../components/BlogList.vue'
+import UserInfo from './components/UserInfo.vue'
 import releaseBlog from './src/releaseBlog'
 import userModular from './src/user'
 export default {
   name: 'home',
   components: {
-    BlogList
+    BlogList,
+    UserInfo
   },
   setup () {
     const state = reactive({
@@ -155,9 +133,6 @@ export default {
     // 获取全部博客
     const { loadgetAllBlogList } = userModular(state)
 
-    // 头像地址
-    const { userPhotoAvatar } = userModular(state)
-
     onMounted(() => {
       loadgetUserInfo() // 获取用户信息
       loadgetAllBlogList() // 获取全部博客
@@ -169,7 +144,6 @@ export default {
       upImageFileInputChange, // 当上传文件被改变时
       clickFileAddImg, // 点击上传文件的方形框位置
       publishContent, // 点击发布的按钮
-      userPhotoAvatar, // 头像地址
       loadgetAllBlogList // 获取全部博客
     }
   }
@@ -269,41 +243,6 @@ export default {
         #blogListLoading {
           width: 585px;
           height: 300px;
-        }
-      }
-      .user_list {
-        border-radius: 8px;
-        width: 370px;
-        padding: 0 20px;
-        box-sizing: border-box;
-        height: 300px;
-        background: #fff;
-        box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-        .my_pohto {
-          width: 90px;
-          margin: auto;
-          margin-top: -60px;
-          cursor: pointer;
-          .my_pohto_img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-          }
-        }
-        .nickname {
-          line-height: 30px;
-          color: #333;
-          font-size: 18px;
-          text-align: center;
-          cursor: pointer;
-        }
-        .autograph {
-          font-size: 14px;
-          color: #161616;
-          text-align: center;
-          margin-top: 6px;
-          cursor: pointer;
         }
       }
     }
