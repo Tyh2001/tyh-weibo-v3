@@ -91,18 +91,19 @@
 </template>
 
 <script>
-import { reactive, toRefs, onMounted, computed, getCurrentInstance, watch } from 'vue'
+import { reactive, toRefs, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '../../components/BlogList.vue'
 import followModular from './src/follow'
 import userModular from './src/user'
+import { useRoute } from 'vue-router'
 export default {
   name: 'my',
   components: {
     BlogList
   },
   setup () {
-    const { proxy } = getCurrentInstance()
+    const route = useRoute()
     const state = reactive({
       userForm: {},
       userInfo: useStore().state.userInfo, // 用户信息
@@ -111,7 +112,7 @@ export default {
       followBtnLoading: false // 点击关注按钮禁用状态
     })
 
-    // // 将时间戳转换为正常的时间对象格式
+    // 将时间戳转换为正常的时间对象格式
     const { registerTime } = userModular(state)
 
     // 获取用户信息
@@ -143,8 +144,8 @@ export default {
 
     // 监视路由的变化，如果发生变化就重新加载内容
     // 因为这里防止进入其他人的主页时候 再点击自己的博客不发生变化的问题
-    watch(() => proxy.$root.$route, (count, prevCount) => {
-      if (proxy.$root.$route.params.id) {
+    watch(() => route, (count, prevCount) => {
+      if (route.params.id) {
         loadgetUserInfo()
         loadgetAllBlogList()
       }

@@ -2,10 +2,24 @@ import { onFollowUser, getFollowUserList, deleteFollowUser } from '../../../api/
 import { useRoute, useRouter } from 'vue-router'
 import qs from 'qs'
 import { Message } from 'element3'
+import userModular from './src/user'
 
+/**
+ * 我的页面关注模块
+ * @param { object } state 数据
+ * 
+ * 1. 获取我的关注列表
+ * 2. 关注
+ * 3. 取消关注
+ * 4. 去粉丝页面
+ * 5. 去关注页面
+ * 
+ * @returns Fn
+ */
 export default function (state) {
   const route = useRoute()
   const router = useRouter()
+  const { loadgetUserInfo } = userModular(state)
 
   // 获取我的关注列表
   async function loadgetFollowUserList () {
@@ -32,7 +46,7 @@ export default function (state) {
     Message({ message: data.msg, type: 'success', duration: 1300 })
     state.followBtnLoading = false
     state.onFollowChange = true
-    // loadgetUserInfo()
+    loadgetUserInfo()
     loadgetFollowUserList()
   }
 
@@ -51,7 +65,7 @@ export default function (state) {
     Message({ message: data.msg, type: 'success', duration: 1300 })
     state.followBtnLoading = false
     state.onFollowChange = false
-    // loadgetUserInfo()
+    loadgetUserInfo()
     loadgetFollowUserList()
   }
 
