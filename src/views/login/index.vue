@@ -75,9 +75,9 @@ export default {
       }
     })
 
-    const form = ref(null)
     // 点击登录按钮
-    const onLogin = onSubmitLogin(state)
+    const form = ref(null)
+    const { onLogin } = onSubmitLogin(state)
 
     return {
       ...toRefs(state),

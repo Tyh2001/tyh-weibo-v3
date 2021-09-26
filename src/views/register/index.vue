@@ -82,15 +82,12 @@
 </template>
 
 <script>
-import { reactive, toRefs, computed, ref, getCurrentInstance } from 'vue'
-import { Message } from 'element3'
-import { onRegister } from '../../api/user'
-import { randomNum } from '../../utils/randomNum'
-import qs from 'qs'
+import { reactive, toRefs, ref } from 'vue'
+import captchaModular from './src/captcha'
+import registerModular from './src/register'
 export default {
   name: 'register',
   setup () {
-    const { proxy } = getCurrentInstance()
     const state = reactive({
       captchaCode: '', // 验证码随机数
       registerBtnLoading: false, // 注册按钮禁用状态
@@ -154,52 +151,15 @@ export default {
       }
     })
 
-    // 验证码图片地址
-    function captchaImgURLFn () {
-      state.captchaCode = randomNum(15, 1)
-      const path = `./images/captcha_${state.captchaCode}.png`
-      const modules = import.meta.globEager('./images/*')
-      return modules[path].default
-    }
-
     // 生成图片的地址
-    const captchaImgURL = computed(() => {
-      return captchaImgURLFn()
-    })
+    const { captchaImgURL } = captchaModular(state)
 
     // 点击切换新的验证码
-    function changeCaptchaImg () {
-      captchaImgURLFn()
-    }
+    const { changeCaptchaImg } = captchaModular(state)
 
     // 注册
     const registerFormDOM = ref(null)
-    async function onSubmitRegister () {
-      // registerFormDOM.value.validate(async (valid) => {
-      //   if (!valid) {
-      //     return
-      //   }
-      state.registerBtnLoading = true
-      const { data } = await onRegister(qs.stringify({
-        username: state.registerForm.username,
-        password: state.registerForm.password,
-        mail: state.registerForm.mail,
-        captcha: state.registerForm.captcha,
-        captchaCode: state.captchaCode
-      }))
-      if (data.code !== 201) {
-        Message.error({ message: data.msg, duration: 1300 })
-        if (data.msg === '验证码错误') {
-          state.captchaCode = randomNum(15, 1)
-        }
-        state.registerBtnLoading = false
-        return
-      }
-      state.registerBtnLoading = false
-      Message({ message: data.msg, type: 'success', duration: 1300 })
-      proxy.$root.$router.push('/user/login')
-      // })
-    }
+    const { onSubmitRegister } = registerModular(state)
 
     return {
       ...toRefs(state),

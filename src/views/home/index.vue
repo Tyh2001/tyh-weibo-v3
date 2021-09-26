@@ -149,13 +149,14 @@ export default {
     // 获取全部博客
     const { loadgetAllBlogList } = userModular(state)
 
-    onMounted(() => {
-      loadgetUserInfo()
-      loadgetAllBlogList()
-    })
-
     // 头像地址
     const { userPhotoAvatar } = userModular(state)
+
+    onMounted(() => {
+      loadgetUserInfo() // 获取用户信息
+      loadgetAllBlogList() // 获取全部博客
+    })
+
 
     return {
       ...toRefs(state),

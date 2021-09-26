@@ -41,5 +41,7 @@ export default function (state) {
     })
   }
 
-  return onLogin
+  return {
+    onLogin
+  }
 }

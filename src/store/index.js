@@ -17,7 +17,5 @@ export default createStore({
       removeStorage('virgo_user')
       state.userInfo = null
     }
-  },
-  actions: {},
-  getters: {}
+  }
 })

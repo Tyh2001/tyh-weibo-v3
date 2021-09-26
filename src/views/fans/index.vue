@@ -38,8 +38,9 @@ export default {
 
     // 获取我的粉丝列表
     const { loadgetFansUserList } = userModular(state)
+
     onMounted(() => {
-      loadgetFansUserList()
+      loadgetFansUserList() // 获取我的粉丝列表
     })
 
     return {

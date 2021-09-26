@@ -39,7 +39,7 @@ export default {
     const { loadgetFollowUserList } = userModular(state)
 
     onMounted(() => {
-      loadgetFollowUserList()
+      loadgetFollowUserList() // 获取我的关注列表
     })
 
     return {

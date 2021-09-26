@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, onMounted, computed } from 'vue'
+import { reactive, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '../../components/BlogList.vue'
 import userModular from './src/user'
@@ -63,8 +63,8 @@ export default {
     const { loadgetFollowAllBlogList } = userModular(state)
 
     onMounted(() => {
-      loadgetUserInfo()
-      loadgetFollowAllBlogList()
+      loadgetUserInfo() // 获取用户信息
+      loadgetFollowAllBlogList() // 获取指定用户博客内容
     })
 
     return {
