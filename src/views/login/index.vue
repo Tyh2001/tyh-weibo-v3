@@ -28,7 +28,11 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button :loading="loginDialog" type="success" @click="onLogin">
+          <el-button
+            :loading="loginDialog"
+            type="success"
+            @click="onLogin(form)"
+          >
             登录
           </el-button>
         </el-form-item>
@@ -73,7 +77,7 @@ export default {
 
     const form = ref(null)
     // 点击登录按钮
-    const onLogin = onSubmitLogin(state, form)
+    const onLogin = onSubmitLogin(state)
 
     return {
       ...toRefs(state),
