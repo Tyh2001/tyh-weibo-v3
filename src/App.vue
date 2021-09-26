@@ -5,10 +5,6 @@
 <script>
 export default {
   name: 'app',
-  setup () {
-
-    return {}
-  }
 }
 </script>
 

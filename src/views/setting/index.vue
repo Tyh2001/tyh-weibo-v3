@@ -13,7 +13,7 @@
         ref="fileInput"
         class="up_user_photo"
         type="file"
-        @change="onChangeFileInp"
+        @change="onChangeFileInp(fileInput)"
       />
     </div>
 
@@ -157,8 +157,8 @@
     title="提示"
     :visible.sync="CropperImgDialog"
     width="600px"
-    @opened="dialogOpened"
-    @closed="dialogClosed"
+    @opened="dialogOpened(cropperImg)"
+    @closed="dialogClosed(fileInput)"
   >
     <div>
       <img class="cropper_img" ref="cropperImg" :src="UploadfileImgUrl" />
@@ -177,12 +177,10 @@
 </template>
 
 <script>
-import { uploadUserPhoto } from '../../api/user'
 import { reactive, toRefs, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import 'cropperjs/dist/cropper.css'
-import Cropper from 'cropperjs'
 import userModular from './src/user'
+import cropperjsModular from './src/cropperjs'
 export default {
   name: 'setting',
   setup () {
@@ -209,9 +207,6 @@ export default {
 
     // 获取用户资料
     const { loadgetUserInfo } = userModular(state)
-    onMounted(() => {
-      loadgetUserInfo()
-    })
 
     // 头像地址
     const { userPhotoAvatar } = userModular(state)
@@ -227,43 +222,21 @@ export default {
 
     // 文本框被改变时
     const fileInput = ref(null)
-    function onChangeFileInp () {
-      // 获取到上传图片的路径
-      state.UploadfileImgUrl = URL.createObjectURL(fileInput.value.files[0])
-      state.CropperImgDialog = true // 展示对话框
-    }
+    const { onChangeFileInp } = cropperjsModular(state)
 
     // 当头像裁切器对话框完全展示时候的回调 获取对话框中的 img 标签 并初始化裁切器
     const cropperImg = ref(null)
-    function dialogOpened () {
-      state.cropper = new Cropper(cropperImg.value, {
-        aspectRatio: 1 / 1, // 裁切框的比例
-        viewMode: 1, // 裁切框不能移出图片范围
-        dragMode: 'none' // 背景画布禁止移动
-      })
-    }
+    const { dialogOpened } = cropperjsModular(state)
 
     // 当头像裁切器对话框完全关闭的时候 销毁裁切器
-    function dialogClosed () {
-      state.cropper.destroy()
-      fileInput.value = ''
-    }
+    const { dialogClosed } = cropperjsModular(state)
 
     // 点击上传图片
-    function ToUploadPhoto () {
-      state.upImgLoginDialog = true
-      state.cropper.getCroppedCanvas().toBlob((blob) => {
-        const formData = new FormData()
-        // 这里第三个参数为图片后缀名
-        formData.append('photo', blob, '.jpg')
-        uploadUserPhoto(formData, state.userInfo.id).then(res => {
-          state.userForm.avatar = res.data.data.url
-          Message({ message: '上传头像成功', type: 'success', duration: 1300 })
-          state.CropperImgDialog = false
-          state.upImgLoginDialog = false
-        })
-      })
-    }
+    const { ToUploadPhoto } = cropperjsModular(state)
+
+    onMounted(() => {
+      loadgetUserInfo() // 获取用户资料
+    })
 
     return {
       ...toRefs(state),

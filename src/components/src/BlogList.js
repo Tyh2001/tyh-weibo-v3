@@ -6,6 +6,25 @@ import { onFollowUser, deleteFollowUser } from '../../api/follow'
 import qs from 'qs'
 import { Message, Msgbox } from 'element3'
 
+/**
+ * 博客列表模块
+ * @param { object } state 数据
+ * @param { object } props 传递的数据
+ * @param { object } emit 想父组件发送数据
+ * 
+ * 1. 用户头像地址
+ * 2. 博客发布的时间
+ * 3. 博客图片地址
+ * 4. 是否展示关注和取消关注选项
+ * 5. 是否显示删除选项
+ * 6. 关注用户
+ * 7. 取消关注用户
+ * 8. 删除博客
+ * 9. 评论点击
+ * 10. 点击点赞
+ * 
+ * @returns Fn
+ */
 export default function (state, props, emit) {
   // 用户头像地址
   const userPhotoAvatar = computed(() => {
