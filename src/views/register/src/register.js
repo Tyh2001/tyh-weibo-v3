@@ -15,9 +15,10 @@ export default function (state) {
   const router = useRouter()
 
   // 注册
-  async function onSubmitRegister () {
-    // registerFormDOM.value.validate(async (valid) => {
-    //   if (!valid) {
+  async function onSubmitRegister (registerFormDOM) {
+    // registerFormDOM.validate(async (valid) => {
+    //   if (valid === false) {
+    //     Message.error({ message: '注册格式不正确', duration: 1300 })
     //     return
     //   }
     state.registerBtnLoading = true

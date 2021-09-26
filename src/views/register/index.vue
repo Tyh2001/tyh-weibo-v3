@@ -66,7 +66,7 @@
       <el-button
         type="warning"
         :loading="registerBtnLoading"
-        @click="onSubmitRegister"
+        @click="onSubmitRegister(registerFormDOM)"
       >
         立即注册
       </el-button>
