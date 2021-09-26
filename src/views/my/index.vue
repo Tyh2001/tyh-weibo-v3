@@ -92,13 +92,13 @@
 
 <script>
 import { reactive, toRefs, onMounted, computed, getCurrentInstance, watch } from 'vue'
-import { getUserInfo } from '../api/user'
+import { getUserInfo } from '../../api/user'
 import { useStore } from 'vuex'
-import { toDates } from '../utils/changeTime'
-import url from '../utils/url'
-import { getUserBlogList } from '../api/blog'
+import { toDates } from '../../utils/changeTime'
+import url from '../../utils/url'
+import { getUserBlogList } from '../../api/blog'
 import { onFollowUser, getFollowUserList, deleteFollowUser } from '../api/follow'
-import BlogList from '../components/BlogList.vue'
+import BlogList from '../../components/BlogList.vue'
 import qs from 'qs'
 import { Message } from 'element3'
 export default {
