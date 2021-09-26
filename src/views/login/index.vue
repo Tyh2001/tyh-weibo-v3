@@ -51,7 +51,7 @@
 
 <script>
 import { ref, reactive, toRefs } from 'vue'
-import onSubmitLogin from './src/login.js'
+import onSubmitLogin from './src/login'
 export default {
   name: 'login',
   setup () {
