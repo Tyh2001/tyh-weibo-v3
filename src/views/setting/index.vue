@@ -157,9 +157,9 @@
     title="提示"
     :visible.sync="CropperImgDialog"
     width="600px"
+    :show-close="false"
     @opened="dialogOpened(cropperImg)"
     @closed="dialogClosed(fileInput)"
-    :show-close="false"
   >
     <div>
       <img class="cropper_img" ref="cropperImg" :src="UploadfileImgUrl" />
