@@ -1,3 +1,7 @@
+<!-- 
+  我的粉丝和关注列表组件
+  用于展示我的关注和我的粉丝列表
+ -->
 <template>
   <div id="UserList" @click="toUserBlog">
     <img

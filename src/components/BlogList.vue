@@ -1,3 +1,7 @@
+<!-- 
+  博客列表组件
+  内部包括用户昵称，用户头像，博客发布时间，发布内容，发布的文字等等
+ -->
 <template>
   <div id="BlogList">
     <div class="userPhoto">
