@@ -32,6 +32,13 @@ const routes = [
         component: () => import('../views/setting/index.vue'),
         meta: { requiresAuth: true }
       },
+      // 我的关注
+      {
+        path: '/follow',
+        name: 'follow',
+        component: () => import('../views/follow/index.vue'),
+        meta: { requiresAuth: true }
+      },
       // 我的页面先加载模板
       {
         path: '/my/:id',
@@ -61,13 +68,6 @@ const routes = [
             meta: { requiresAuth: true }
           }
         ]
-      },
-      // 我的关注
-      {
-        path: '/follow',
-        name: 'follow',
-        component: () => import('../views/follow/index.vue'),
-        meta: { requiresAuth: true }
       }
     ]
   }

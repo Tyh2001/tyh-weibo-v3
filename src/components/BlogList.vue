@@ -63,14 +63,9 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from 'vue'
-import url from '../utils/url'
-import { toDates } from '../utils/changeTime'
+import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
-import { deleteMyBlogList } from '../api/blog'
-import { onFollowUser, deleteFollowUser } from '../api/follow'
-import qs from 'qs'
-import { Message, Msgbox } from 'element3'
+import BlogListModular from './src/BlogList'
 export default {
   name: 'BlogList',
   props: {
@@ -88,87 +83,34 @@ export default {
     })
 
     // 用户头像地址
-    const userPhotoAvatar = computed(() => {
-      return `${url}/userPhoto/${props.blogItem.avatar}`
-    })
+    const { userPhotoAvatar } = BlogListModular(state, props)
 
     // 博客发布的时间
-    function releaseTime () {
-      return toDates(props.blogItem.release_time)
-    }
+    const { releaseTime } = BlogListModular(state, props)
 
     // 博客图片地址
-    function blogItemImgURL (urlsuffix) {
-      return `${url}/blogImg/${urlsuffix}`
-    }
+    const { blogItemImgURL } = BlogListModular(state)
 
     // 是否展示关注和取消关注选项
-    const followShow = computed(() => {
-      return props.blogItem.user_id !== state.userInfo.id
-    })
+    const { followShow } = BlogListModular(state, props)
 
     // 是否显示删除选项
-    const changeDelete = computed(() => {
-      return props.blogItem.user_id === state.userInfo.id
-    })
+    const { changeDelete } = BlogListModular(state, props)
 
     // 关注用户
-    async function onFollowTa () {
-      state.upFollowDisabled = true
-      const { data } = await onFollowUser(qs.stringify({
-        user_id: state.userInfo.id,
-        follower_id: props.blogItem.user_id
-      }))
-      if (data.code !== 201) {
-        Message.error({ message: data.msg, duration: 1300 })
-        state.upFollowDisabled = false
-        return
-      }
-      Message({ message: data.msg, type: 'success', duration: 1300 })
-      state.upFollowDisabled = false
-    }
+    const { onFollowTa } = BlogListModular(state, props)
 
     // 取消关注用户
-    async function deleteFollowTa () {
-      state.delFollowDisabled = true
-      const { data } = await deleteFollowUser(qs.stringify({
-        user_id: state.userInfo.id,
-        follower_id: props.blogItem.user_id
-      }))
-      if (data.code !== 201) {
-        Message.error({ message: data.msg, duration: 1300 })
-        state.delFollowDisabled = false
-        return
-      }
-      Message({ message: data.msg, type: 'success', duration: 1300 })
-      state.delFollowDisabled = false
-      emit('loadBlogList')
-    }
+    const { deleteFollowTa } = BlogListModular(state, props, emit)
 
     // 删除博客
-    function deleteBlog () {
-      Msgbox.confirm('确定删除该条博客吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        const { data } = await deleteMyBlogList(props.blogItem.blogId)
-        Message({ message: data.msg, type: 'success', duration: 1300 })
-        emit('loadBlogList')
-      }).catch(() => {
-        Message({ type: 'info', message: '已取消删除', duration: 1300 })
-      })
-    }
+    const { deleteBlog } = BlogListModular(state, props, emit)
 
     // 评论点击
-    function sayChange () {
-      Message({ type: 'info', message: '评论功能正在开发中...', duration: 1300 })
-    }
+    const { sayChange } = BlogListModular(state)
 
     // 点击点赞
-    function goodChange () {
-      Message({ type: 'info', message: '点赞功能正在开发中...', duration: 1300 })
-    }
+    const { goodChange } = BlogListModular(state)
 
     return {
       ...toRefs(state),
