@@ -2,7 +2,7 @@ import { onFollowUser, getFollowUserList, deleteFollowUser } from '../../../api/
 import { useRoute, useRouter } from 'vue-router'
 import qs from 'qs'
 import { Message } from 'element3'
-import userModular from './src/user'
+import userModular from './user'
 
 /**
  * 我的页面关注模块

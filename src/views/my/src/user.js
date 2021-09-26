@@ -5,6 +5,18 @@ import { getUserBlogList } from '../../../api/blog'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
+/**
+ * 我的页面用户相关模块
+ * @param { object } state 数据
+ * 
+ * 1. 将时间戳转换为正常的时间对象格式
+ * 2. 获取用户信息
+ * 3. 头像地址
+ * 4. 获取指定用户博客内容
+ * 5. 关注展示状态
+ * 
+ * @returns Fn
+ */
 export default function (state) {
   const route = useRoute()
 
