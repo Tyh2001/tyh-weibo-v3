@@ -159,10 +159,12 @@
     width="600px"
     @opened="dialogOpened(cropperImg)"
     @closed="dialogClosed(fileInput)"
+    :show-close="false"
   >
     <div>
       <img class="cropper_img" ref="cropperImg" :src="UploadfileImgUrl" />
     </div>
+    <br />
     <span slot="footer" class="dialog-footer">
       <el-button @click="CropperImgDialog = false">取消</el-button>
       <el-button
