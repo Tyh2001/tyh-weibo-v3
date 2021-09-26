@@ -92,15 +92,10 @@
 
 <script>
 import { reactive, toRefs, onMounted, computed, getCurrentInstance, watch } from 'vue'
-import { getUserInfo } from '../../api/user'
 import { useStore } from 'vuex'
-import { toDates } from '../../utils/changeTime'
-import url from '../../utils/url'
-import { getUserBlogList } from '../../api/blog'
-import { onFollowUser, getFollowUserList, deleteFollowUser } from '../api/follow'
 import BlogList from '../../components/BlogList.vue'
-import qs from 'qs'
-import { Message } from 'element3'
+import followModular from './src/follow'
+import userModular from './src/user'
 export default {
   name: 'my',
   components: {
@@ -116,103 +111,35 @@ export default {
       followBtnLoading: false // 点击关注按钮禁用状态
     })
 
-    // 将时间戳转换为正常的时间对象格式
-    function registerTime () {
-      return toDates(state.userForm.regis_time)
-    }
+    // // 将时间戳转换为正常的时间对象格式
+    const { registerTime } = userModular(state)
 
     // 获取用户信息
-    const loadgetUserInfo = onMounted(async () => {
-      const { data } = await getUserInfo(proxy.$root.$route.params.id)
-      state.userForm = data.data
-    })
+    const { loadgetUserInfo } = userModular(state)
 
     // 头像地址
-    const userPhotoAvatar = computed(() => {
-      return `${url}/userPhoto/${state.userForm.avatar}`
-    })
+    const { userPhotoAvatar } = userModular(state)
 
     // 获取指定用户博客内容
-    const loadgetAllBlogList = onMounted(async () => {
-      const { data } = await getUserBlogList(proxy.$root.$route.params.id)
-      state.userBlogList = data.data
-    })
+    const { loadgetAllBlogList } = userModular(state)
 
     // 关注展示状态
-    const showFollowBtn = computed(() => {
-      return state.userInfo.id.toString() !== proxy.$root.$route.params.id.toString()
-    })
-
-    // 获取关注列表展示不同的按钮状态
-    onMounted(() => {
-      loadgetFollowUserList()
-    })
+    const { showFollowBtn } = userModular(state)
 
     // 获取我的关注列表
-    async function loadgetFollowUserList () {
-      const { data } = await getFollowUserList(qs.stringify({ user_id: state.userInfo.id }))
-      data.data.forEach(item => {
-        if (item.follower_id.toString() === proxy.$root.$route.params.id.toString()) {
-          state.onFollowChange = true
-        }
-      })
-    }
+    const { loadgetFollowUserList } = followModular(state)
 
     // 关注
-    async function changeFollowTa () {
-      state.followBtnLoading = true
-      const { data } = await onFollowUser(qs.stringify({
-        user_id: state.userInfo.id,
-        follower_id: proxy.$root.$route.params.id
-      }))
-      if (data.code !== 201) {
-        Message.error({ message: data.msg, duration: 1300 })
-        state.followBtnLoading = false
-        return
-      }
-      Message({ message: data.msg, type: 'success', duration: 1300 })
-      state.followBtnLoading = false
-      state.onFollowChange = true
-      loadgetUserInfo()
-      loadgetFollowUserList()
-    }
+    const { changeFollowTa } = followModular(state)
 
     // 取消关注
-    async function deleteFollowTa () {
-      state.followBtnLoading = true
-      const { data } = await deleteFollowUser(qs.stringify({
-        user_id: state.userInfo.id,
-        follower_id: proxy.$root.$route.params.id
-      }))
-      if (data.code !== 201) {
-        Message.error({ message: data.msg, duration: 1300 })
-        state.followBtnLoading = false
-        return
-      }
-      Message({ message: data.msg, type: 'success', duration: 1300 })
-      state.followBtnLoading = false
-      state.onFollowChange = false
-      loadgetUserInfo()
-      loadgetFollowUserList()
-    }
+    const { deleteFollowTa } = followModular(state)
 
     // 去粉丝页面
-    function goFansWebList () {
-      if (state.userInfo.id.toString() === proxy.$root.$route.params.id.toString()) {
-        proxy.$root.$router.push('/fans/' + state.userInfo.id)
-        return
-      }
-      Message.error({ message: '不能查看他人粉丝列表', duration: 1300 })
-    }
+    const { goFansWebList } = followModular(state)
 
     // 去关注页面
-    function goFollowsWebList () {
-      if (state.userInfo.id.toString() === proxy.$root.$route.params.id.toString()) {
-        proxy.$root.$router.push('/myfollow/' + state.userInfo.id)
-        return
-      }
-      Message.error({ message: '不能查看他人关注列表', duration: 1300 })
-    }
+    const { goFollowsWebList } = followModular(state)
 
     // 监视路由的变化，如果发生变化就重新加载内容
     // 因为这里防止进入其他人的主页时候 再点击自己的博客不发生变化的问题
@@ -221,6 +148,12 @@ export default {
         loadgetUserInfo()
         loadgetAllBlogList()
       }
+    })
+
+    onMounted(() => {
+      loadgetFollowUserList() // 获取我的关注列表
+      loadgetAllBlogList()   // 获取指定用户博客内容
+      loadgetUserInfo() // 获取用户信息
     })
 
     return {

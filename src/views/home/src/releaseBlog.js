@@ -1,5 +1,6 @@
 import { Message } from 'element3'
 import { onReleaseBlog } from '../../../api/blog'
+import userModular from './user'
 
 /**
  * 发布博客模块
@@ -46,6 +47,7 @@ export default function (state) {
 
   // 点击发布的按钮
   async function publishContent () {
+    const { loadgetAllBlogList } = userModular(state)
     // 如果内容为空不能发布
     if (state.blogText === '') {
       return Message.error('内容为空不能发布')
@@ -71,7 +73,7 @@ export default function (state) {
       state.upLoadImagesFileArray = []
       state.blogText = ''
       state.changeBtnLoading = false
-      // loadgetAllBlogList()
+      loadgetAllBlogList()
       return
     }
     state.changeBtnLoading = false
