@@ -11,20 +11,12 @@
         :src="
           logBoolean ? userPhotoAvatar : '/src/views/home/images/outLogin.jpg'
         "
-        @click="
-          logBoolean
-            ? $router.push('/my/' + userInfo.id)
-            : $router.push('/user/login')
-        "
+        @click="$router.push(logBoolean ? '/my/' + userInfo.id : '/user/login')"
       />
     </div>
     <h4
       class="nickname"
-      @click="
-        logBoolean
-          ? $router.push('/my/' + userInfo.id)
-          : $router.push('/user/login')
-      "
+      @click="$router.push(logBoolean ? '/my/' + userInfo.id : '/user/login')"
     >
       {{ logBoolean ? user.nickname : "未登录用户" }}
     </h4>
