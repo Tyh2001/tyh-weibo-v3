@@ -13,12 +13,13 @@ import { useRouter } from 'vue-router'
  * 
  * @returns Fn
  */
-export default function (form, state) {
+export default function (state, form) {
   const store = useStore()
   const router = useRouter()
 
   // 点击登录按钮
   function onLogin () {
+    console.log(form)
     form.value.validate(async (valid) => {
       if (!valid) {
         Message.error({ message: '请输入正确账号和密码', duration: 1300 })

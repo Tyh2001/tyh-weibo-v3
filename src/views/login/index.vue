@@ -73,7 +73,7 @@ export default {
 
     const form = ref(null)
     // 点击登录按钮
-    const onLogin = onSubmitLogin(form, state)
+    const onLogin = onSubmitLogin(state, form)
 
     return {
       ...toRefs(state),
@@ -91,7 +91,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("../images/login.jpg") no-repeat center;
+  background: url("./images/login.jpg") no-repeat center;
   background-size: cover;
   #loginBox {
     background: #fff;
