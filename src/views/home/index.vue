@@ -82,9 +82,15 @@
         <!-- 用户内容 -->
         <div v-if="userInfo" class="user_list">
           <div class="my_pohto">
-            <img class="my_pohto_img" :src="userPhotoAvatar" />
+            <img
+              class="my_pohto_img"
+              :src="userPhotoAvatar"
+              @click="$router.push('/my/' + userInfo.id)"
+            />
           </div>
-          <h4 class="nickname">{{ user.nickname }}</h4>
+          <h4 class="nickname" @click="$router.push('/my/' + userInfo.id)">
+            {{ user.nickname }}
+          </h4>
           <p class="autograph">{{ user.autograph }}</p>
         </div>
 
@@ -156,7 +162,6 @@ export default {
       loadgetUserInfo() // 获取用户信息
       loadgetAllBlogList() // 获取全部博客
     })
-
 
     return {
       ...toRefs(state),
