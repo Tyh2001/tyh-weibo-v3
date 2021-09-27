@@ -41,7 +41,6 @@ export default function (state) {
       state.changeUserInfoBtnLoading = false
       return
     }
-    Message({ message: data.msg, type: 'success', duration: 1300 })
     state.changeUserInfoBloon = false
     state.changeUserInfoBtnLoading = false
   }
