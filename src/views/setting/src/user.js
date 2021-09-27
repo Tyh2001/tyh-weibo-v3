@@ -56,7 +56,6 @@ export default function (state) {
       state.changeUserPassBtnLoading = false
       return
     }
-    Message({ message: data.msg + '，请退出重新登录', type: 'success', duration: 1300 })
     state.changeUserPassBtnLoading = false
     proxy.$root.$router.push('/user/login')
     store.commit('outLogin')
