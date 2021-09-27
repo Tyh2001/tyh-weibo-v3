@@ -1,7 +1,6 @@
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { uploadUserPhoto } from '../../../api/user'
-import { Message } from 'element3'
 
 /**
  * 设置页面头像裁切上传模块
@@ -45,7 +44,6 @@ export default function (state) {
       formData.append('photo', blob, '.jpg')
       uploadUserPhoto(formData, state.userInfo.id).then(res => {
         state.userForm.avatar = res.data.data.url
-        Message({ message: '上传头像成功', type: 'success', duration: 1300 })
         state.CropperImgDialog = false
         state.upImgLoginDialog = false
       })

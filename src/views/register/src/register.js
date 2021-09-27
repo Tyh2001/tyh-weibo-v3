@@ -1,4 +1,3 @@
-import { Message } from 'element3'
 import { onRegister } from '../../../api/user'
 import qs from 'qs'
 import { useRouter } from 'vue-router'
@@ -16,11 +15,6 @@ export default function (state) {
 
   // 注册
   async function onSubmitRegister (registerFormDOM) {
-    // registerFormDOM.validate(async (valid) => {
-    //   if (valid === false) {
-    //     Message.error({ message: '注册格式不正确', duration: 1300 })
-    //     return
-    //   }
     state.registerBtnLoading = true
     const { data } = await onRegister(qs.stringify({
       username: state.registerForm.username,
@@ -37,9 +31,7 @@ export default function (state) {
       return
     }
     state.registerBtnLoading = false
-    Message({ message: data.msg, type: 'success', duration: 1300 })
     router.push('/user/login')
-    // })
   }
 
   return {

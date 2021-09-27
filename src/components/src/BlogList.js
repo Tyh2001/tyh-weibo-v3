@@ -62,7 +62,6 @@ export default function (state, props, emit) {
       state.upFollowDisabled = false
       return
     }
-    Message({ message: data.msg, type: 'success', duration: 1300 })
     state.upFollowDisabled = false
   }
 
@@ -77,7 +76,6 @@ export default function (state, props, emit) {
       state.delFollowDisabled = false
       return
     }
-    Message({ message: data.msg, type: 'success', duration: 1300 })
     state.delFollowDisabled = false
     emit('loadBlogList')
   }
@@ -89,12 +87,9 @@ export default function (state, props, emit) {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(async () => {
-      const { data } = await deleteMyBlogList(props.blogItem.blogId)
-      Message({ message: data.msg, type: 'success', duration: 1300 })
+      await deleteMyBlogList(props.blogItem.blogId)
       emit('loadBlogList')
-    }).catch(() => {
-      Message({ type: 'info', message: '已取消删除', duration: 1300 })
-    })
+    }).catch(() => { })
   }
 
   // 评论点击

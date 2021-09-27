@@ -33,7 +33,6 @@ export default function (state) {
         state.loginDialog = false
         return
       }
-      Message({ message: data.msg, type: 'success', duration: 1300 })
       state.loginDialog = false
       store.commit('changeUser', data.data)
       router.push('/')

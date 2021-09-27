@@ -3,14 +3,9 @@
     <div id="registerBox">
       <h1 class="title">注册账号</h1>
 
-      <el-form
-        :model="registerForm"
-        :rules="registerRules"
-        ref="registerFormDOM"
-        label-width="auto"
-      >
+      <el-form :model="registerForm" ref="registerFormDOM" label-width="auto">
         <!-- 用户名 -->
-        <el-form-item prop="username">
+        <el-form-item>
           <el-input
             v-model="registerForm.username"
             clearable
@@ -19,7 +14,7 @@
         </el-form-item>
 
         <!-- 第一遍密码 -->
-        <el-form-item prop="password">
+        <el-form-item>
           <el-input
             v-model="registerForm.password"
             placeholder="请输入密码"
@@ -28,7 +23,7 @@
         </el-form-item>
 
         <!-- 第二遍密码 -->
-        <el-form-item prop="password2">
+        <el-form-item>
           <el-input
             v-model="registerForm.password2"
             placeholder="请输入再次密码"
@@ -37,7 +32,7 @@
         </el-form-item>
 
         <!-- 邮箱 -->
-        <el-form-item prop="mail">
+        <el-form-item>
           <el-input
             v-model="registerForm.mail"
             clearable
@@ -46,7 +41,7 @@
         </el-form-item>
 
         <!-- 验证码 -->
-        <el-form-item prop="captcha">
+        <el-form-item>
           <div id="captcha_form_item">
             <el-input
               class="captcha_input"
@@ -66,7 +61,7 @@
       <el-button
         type="warning"
         :loading="registerBtnLoading"
-        @click="onSubmitRegister(registerFormDOM)"
+        @click="onSubmitRegister"
       >
         立即注册
       </el-button>
@@ -98,56 +93,6 @@ export default {
         password2: '',
         mail: '',
         captcha: ''
-      },
-      // 注册表单验证
-      registerRules: {
-        // 用户名
-        username: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-          { min: 6, max: 12, message: '账号长度需在 6 到 12 个字符', trigger: 'blur' }
-        ],
-        // 第一遍密码
-        password: [
-          {
-            validator: (rule, value, callback) => {
-              if (value === '') {
-                callback(new Error('请输入密码'))
-              } else {
-                if (this.registerForm.password !== '') {
-                  this.$refs.registerForm.validateField('password2')
-                }
-                callback()
-              }
-            },
-            trigger: 'blur'
-          },
-          { min: 8, max: 20, message: '密码长度需在 8 到 20 个字符', trigger: 'blur' }
-        ],
-        // 第二遍密码
-        password2: [
-          {
-            validator: (rule, value, callback) => {
-              if (value === '') {
-                callback(new Error('请再次输入密码'))
-              } else if (value !== this.registerForm.password) {
-                callback(new Error('两次输入密码不一致!'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'blur'
-          }
-        ],
-        // 邮箱
-        mail: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/, message: '邮箱格式不正确', trigger: 'blur' }
-        ],
-        // 验证码
-        captcha: [
-          { required: true, message: '请输入验证码', trigger: 'blur' },
-          { min: 2, max: 2, message: '请输入正确验证码', trigger: 'blur' }
-        ]
       }
     })
 
@@ -158,15 +103,13 @@ export default {
     const { changeCaptchaImg } = captchaModular(state)
 
     // 注册
-    const registerFormDOM = ref(null)
     const { onSubmitRegister } = registerModular(state)
 
     return {
       ...toRefs(state),
       captchaImgURL, // 验证码随机地址
       changeCaptchaImg, // 点击切换新的验证码
-      onSubmitRegister, // 注册
-      registerFormDOM // 表单 dom 节点
+      onSubmitRegister // 注册
     }
   }
 }

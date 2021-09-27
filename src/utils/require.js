@@ -8,24 +8,18 @@ const require = axios.create({
   }
 })
 
-// 请求拦截器
-require.interceptors.request.use(function (config) {
-  // 在发送请求之前做些什么
-  return config
-}, function (error) {
-  // 处理请求错误
-  return Promise.reject(error)
-})
-
 // 响应拦截器
 require.interceptors.response.use(function (response) {
-  // 同意处理错误信息
+  // 统一处理错误信息提示
   if (response.data.code !== 201) {
     Message.error({ message: response.data.msg, duration: 1300 })
   }
-  // if (response.data.code === 201) {
 
-  // }
+  // 统一处理正确信息提示
+  const reg = /[\u4e00-\u9fa5]+/g
+  if (reg.test(response.data.msg) && response.data.code === 201) {
+    Message({ message: response.data.msg, type: 'success', duration: 1300 })
+  }
 
   return response
 }, function (error) {

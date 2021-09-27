@@ -68,7 +68,6 @@ export default function (state) {
     })
 
     if (data.code === 201) {
-      Message({ message: data.msg, type: 'success' })
       state.imagesList = []
       state.upLoadImagesFileArray = []
       state.blogText = ''

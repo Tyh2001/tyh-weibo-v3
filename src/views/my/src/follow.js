@@ -42,7 +42,6 @@ export default function (state) {
       state.followBtnLoading = false
       return
     }
-    Message({ message: data.msg, type: 'success', duration: 1300 })
     state.followBtnLoading = false
     state.onFollowChange = true
     loadgetUserInfo()
@@ -60,7 +59,6 @@ export default function (state) {
       state.followBtnLoading = false
       return
     }
-    Message({ message: data.msg, type: 'success', duration: 1300 })
     state.followBtnLoading = false
     state.onFollowChange = false
     loadgetUserInfo()
