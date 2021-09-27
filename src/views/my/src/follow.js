@@ -39,7 +39,6 @@ export default function (state) {
       follower_id: route.params.id
     }))
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       state.followBtnLoading = false
       return
     }
@@ -58,7 +57,6 @@ export default function (state) {
       follower_id: route.params.id
     }))
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       state.followBtnLoading = false
       return
     }

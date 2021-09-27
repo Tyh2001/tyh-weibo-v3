@@ -38,7 +38,6 @@ export default function (state) {
     state.changeUserInfoBtnLoading = true
     const { data } = await changeUserInfo(qs.stringify(state.userForm), state.userInfo.id)
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       state.changeUserInfoBtnLoading = false
       return
     }
@@ -55,7 +54,6 @@ export default function (state) {
       newPass: state.changePass.newPass2
     }), state.userInfo.id)
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       state.changeUserPassBtnLoading = false
       return
     }

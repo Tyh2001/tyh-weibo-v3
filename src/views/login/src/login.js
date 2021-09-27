@@ -30,7 +30,6 @@ export default function (state) {
       }))
 
       if (data.code !== 201) {
-        Message.error({ message: data.msg, duration: 1300 })
         state.loginDialog = false
         return
       }

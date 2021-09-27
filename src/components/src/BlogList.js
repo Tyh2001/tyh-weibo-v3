@@ -59,7 +59,6 @@ export default function (state, props, emit) {
       follower_id: props.blogItem.user_id
     }))
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       state.upFollowDisabled = false
       return
     }
@@ -75,7 +74,6 @@ export default function (state, props, emit) {
       follower_id: props.blogItem.user_id
     }))
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       state.delFollowDisabled = false
       return
     }

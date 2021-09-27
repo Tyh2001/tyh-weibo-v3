@@ -30,7 +30,6 @@ export default function (state) {
       captchaCode: state.captchaCode
     }))
     if (data.code !== 201) {
-      Message.error({ message: data.msg, duration: 1300 })
       if (data.msg === '验证码错误') {
         state.captchaCode = randomNum(15, 1)
       }

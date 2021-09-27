@@ -22,7 +22,7 @@ export default function (state) {
         state.upLoadImagesFileArray.push(filesArr[i]) // 将需要上传的文件添加到数组
         state.imagesList.push(URL.createObjectURL(state.imgfile.files[i])) // 将需要展示的文件添加到数组
       } else {
-        Message.error('最多只能上传9张图片')
+        Message.error({ message: '最多只能上传9张图片', duration: 1300 })
         break
       }
     }
@@ -42,7 +42,7 @@ export default function (state) {
     // 否则点击没有效果
     return state.imagesList.length < 9
       ? state.imgfile.click()
-      : Message.error('最多只能上传9张图片')
+      : Message.error({ message: '最多只能上传9张图片', duration: 1300 })
   }
 
   // 点击发布的按钮
@@ -50,7 +50,7 @@ export default function (state) {
     const { loadgetAllBlogList } = userModular(state)
     // 如果内容为空不能发布
     if (state.blogText === '') {
-      return Message.error('内容为空不能发布')
+      return Message.error({ message: '内容为空不能发布', duration: 1300 })
     }
     state.changeBtnLoading = true
     // 新建一个 FormData
