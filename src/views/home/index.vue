@@ -93,7 +93,7 @@
 import { reactive, onMounted, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '../../components/BlogList.vue'
-import UserInfo from './components/UserInfo.vue'
+import UserInfo from '../../components/UserInfo.vue'
 import releaseBlog from './src/releaseBlog'
 import userModular from './src/user'
 export default {

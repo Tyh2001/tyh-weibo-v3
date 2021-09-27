@@ -1,7 +1,7 @@
 <!--
- 首页和关注页右侧用户信息展示
- 首页分为登录状态和未登录状态
- 关注页面仅为登录状态
+  首页和关注页右侧用户信息展示
+  首页分为登录状态和未登录状态
+  关注页面仅为登录状态
  -->
 <template>
   <div class="user_list">
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import userModular from '../src/user'
+import userModular from '../views/home/src/user'
 export default {
   name: 'UserInfo',
   props: {

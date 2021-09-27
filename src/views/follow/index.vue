@@ -30,7 +30,7 @@ import { reactive, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '../../components/BlogList.vue'
 import userModular from './src/user'
-import UserInfo from '../home/components/UserInfo.vue'
+import UserInfo from '../../components/UserInfo.vue'
 export default {
   name: 'follow',
   components: {

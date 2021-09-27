@@ -15,8 +15,7 @@
 </template>
 
 <script>
-import url from '../utils/url'
-import { useRouter } from 'vue-router'
+import UserListModular from './src/UserList'
 export default {
   name: 'UserList',
   props: {
@@ -33,16 +32,11 @@ export default {
     }
   },
   setup (props) {
-    const router = useRouter()
     // 头像地址
-    function userPhotoAvatar (userPhotoSrc) {
-      return `${url}/userPhoto/${userPhotoSrc}`
-    }
+    const { userPhotoAvatar } = UserListModular(props)
 
     // 点击跳转对于的用户首页
-    function toUserBlog () {
-      router.push(`/my/${props.isFans ? props.item.user_id : props.item.follower_id}`)
-    }
+    const { toUserBlog } = UserListModular(props)
 
     return {
       userPhotoAvatar, // 头像地址
