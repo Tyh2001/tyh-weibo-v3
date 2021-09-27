@@ -11,8 +11,8 @@
       />
       <input
         ref="fileInput"
-        class="up_user_photo"
         type="file"
+        hidden
         @change="onChangeFileInp(fileInput)"
       />
     </div>
@@ -276,9 +276,6 @@ export default {
       height: 100px;
       border-radius: 50%;
       cursor: pointer;
-    }
-    .up_user_photo {
-      display: none;
     }
   }
   .el-form {
