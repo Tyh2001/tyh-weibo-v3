@@ -109,9 +109,9 @@
 
   <el-card>
     <h3 class="title">修改密码</h3>
-    <el-form :model="changePass" ref="userPassForm" label-width="80px">
+    <el-form :model="changePass" label-width="80px">
       <!-- 原始密码 -->
-      <el-form-item label="原始密码" prop="oldPass">
+      <el-form-item label="原始密码">
         <el-input
           v-model="changePass.oldPass"
           placeholder="请输入原始密码"
@@ -120,19 +120,10 @@
       </el-form-item>
 
       <!-- 新密码 -->
-      <el-form-item label="新密码" prop="newPass1">
-        <el-input
-          v-model="changePass.newPass1"
-          placeholder="请输入新密码"
-          show-password
-        />
-      </el-form-item>
-
-      <!-- 确认密码 -->
-      <el-form-item label="确认密码" prop="newPass2">
+      <el-form-item label="新密码">
         <el-input
           v-model="changePass.newPass2"
-          placeholder="确认新密码"
+          placeholder="输入新密码"
           show-password
         />
       </el-form-item>
@@ -196,7 +187,6 @@ export default {
       // 修改密码
       changePass: {
         oldPass: '',
-        newPass1: '',
         newPass2: ''
       },
       changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态

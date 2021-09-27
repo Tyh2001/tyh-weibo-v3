@@ -57,7 +57,7 @@ export default function (state) {
       return
     }
     state.changeUserPassBtnLoading = false
-    proxy.$root.$router.push('/user/login')
+    router.push('/user/login')
     store.commit('outLogin')
   }
 
