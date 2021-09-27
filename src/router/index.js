@@ -3,29 +3,34 @@ import { Message } from 'element3'
 import { getStorage } from '../utils/localStorage'
 
 const routes = [
+  // 登录
   {
     path: '/user/login',
     name: 'login',
     component: () => import('../views/login/index.vue'),
     meta: { requiresAuth: false }
   },
+  // 注册
   {
     path: '/user/register',
     name: 'register',
     component: () => import('../views/register/index.vue'),
     meta: { requiresAuth: false }
   },
+  // 首页加载模板
   {
     path: '/',
     component: () => import('../views/layout/index.vue'),
     meta: { requiresAuth: false },
     children: [
+      // 首页
       {
         path: '',
         name: 'home',
         component: () => import('../views/home/index.vue'),
         meta: { requiresAuth: false }
       },
+      // 设置
       {
         path: '/setting',
         name: 'setting',
@@ -39,7 +44,7 @@ const routes = [
         component: () => import('../views/follow/index.vue'),
         meta: { requiresAuth: true }
       },
-      // 我的页面先加载模板
+      // 我的页面加载模板
       {
         path: '/my/:id',
         redirect: '@/views/my',
@@ -79,7 +84,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const user = getStorage('virgo_user')
+  const LOCAL_NAME = 'tyh_user_local'
+  const user = getStorage(LOCAL_NAME)
 
   // 如果需要登录的路由
   if (to.meta.requiresAuth) {

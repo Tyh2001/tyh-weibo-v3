@@ -47,7 +47,7 @@ export const getUserBlogList = userId => {
 
 /**
  * 删除用户的博客内容
- * @param { string } params  博客 id
+ * @param { string } params 博客 id
  * @returns 提示信息 状态码
  */
 export const deleteMyBlogList = blogId => {
@@ -62,7 +62,7 @@ export const deleteMyBlogList = blogId => {
 
 /**
  * 获取我关注人的博客内容
- * @param { string } userID
+ * @param { string } userID 用户 id
  * @returns 我关注人的博客内容
  */
 export const getFollowAllBlogList = userId => {
