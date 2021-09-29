@@ -86,11 +86,18 @@ export default {
       delFollowDisabled: false // 取消关注按钮的禁用状态
     })
 
-    const { userPhotoAvatar, releaseTime, followShow, changeDelete, onFollowTa } = BlogListModular(state, props)
-
-    const { blogItemImgURL, sayChange, goodChange } = BlogListModular(state)
-
-    const { deleteFollowTa, deleteBlog } = BlogListModular(state, props, emit)
+    const {
+      userPhotoAvatar,
+      releaseTime,
+      followShow,
+      changeDelete,
+      onFollowTa,
+      blogItemImgURL,
+      sayChange,
+      goodChange,
+      deleteFollowTa,
+      deleteBlog
+    } = BlogListModular(state, props, emit)
 
     return {
       ...toRefs(state),
