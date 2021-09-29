@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, ref } from 'vue'
+import { reactive, toRefs } from 'vue'
 import captchaModular from './src/captcha'
 import registerModular from './src/register'
 export default {
@@ -96,13 +96,10 @@ export default {
       }
     })
 
-    // 生成图片的地址
-    const { captchaImgURL } = captchaModular(state)
+    // 验证码模块
+    const { captchaImgURL, changeCaptchaImg } = captchaModular(state)
 
-    // 点击切换新的验证码
-    const { changeCaptchaImg } = captchaModular(state)
-
-    // 注册
+    // 注册模块
     const { onSubmitRegister } = registerModular(state)
 
     return {

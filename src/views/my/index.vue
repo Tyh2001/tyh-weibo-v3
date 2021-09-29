@@ -112,35 +112,11 @@ export default {
       followBtnLoading: false // 点击关注按钮禁用状态
     })
 
-    // 将时间戳转换为正常的时间对象格式
-    const { registerTime } = userModular(state)
+    // 用户相关模块
+    const { registerTime, loadgetUserInfo, userPhotoAvatar, loadgetAllBlogList, showFollowBtn } = userModular(state)
 
-    // 获取用户信息
-    const { loadgetUserInfo } = userModular(state)
-
-    // 头像地址
-    const { userPhotoAvatar } = userModular(state)
-
-    // 获取指定用户博客内容
-    const { loadgetAllBlogList } = userModular(state)
-
-    // 关注展示状态
-    const { showFollowBtn } = userModular(state)
-
-    // 获取我的关注列表
-    const { loadgetFollowUserList } = followModular(state)
-
-    // 关注
-    const { changeFollowTa } = followModular(state)
-
-    // 取消关注
-    const { deleteFollowTa } = followModular(state)
-
-    // 去粉丝页面
-    const { goFansWebList } = followModular(state)
-
-    // 去关注页面
-    const { goFollowsWebList } = followModular(state)
+    // 关注模块
+    const { loadgetFollowUserList, changeFollowTa, deleteFollowTa, goFansWebList, goFollowsWebList } = followModular(state)
 
     // 监视路由的变化，如果发生变化就重新加载内容
     // 因为这里防止进入其他人的主页时候 再点击自己的博客不发生变化的问题

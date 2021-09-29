@@ -197,34 +197,13 @@ export default {
       upImgLoginDialog: false // 点击上传头像的按钮禁用状态
     })
 
-    // 获取用户资料
-    const { loadgetUserInfo } = userModular(state)
+    // 用户相关
+    const { loadgetUserInfo, userPhotoAvatar, SaveData, SaveDataNewPass, outLogin } = userModular(state)
 
-    // 头像地址
-    const { userPhotoAvatar } = userModular(state)
-
-    // 修改用户资料
-    const { SaveData } = userModular(state)
-
-    // 修改密码
-    const { SaveDataNewPass } = userModular(state)
-
-    // 退出登录
-    const { outLogin } = userModular(state)
-
-    // 文本框被改变时
+    // 头像裁切
     const fileInput = ref(null)
-    const { onChangeFileInp } = cropperjsModular(state)
-
-    // 当头像裁切器对话框完全展示时候的回调 获取对话框中的 img 标签 并初始化裁切器
     const cropperImg = ref(null)
-    const { dialogOpened } = cropperjsModular(state)
-
-    // 当头像裁切器对话框完全关闭的时候 销毁裁切器
-    const { dialogClosed } = cropperjsModular(state)
-
-    // 点击上传图片
-    const { ToUploadPhoto } = cropperjsModular(state)
+    const { onChangeFileInp, dialogOpened, dialogClosed, ToUploadPhoto } = cropperjsModular(state)
 
     onMounted(() => {
       loadgetUserInfo() // 获取用户资料

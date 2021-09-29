@@ -115,23 +115,11 @@ export default {
       fullscreenLoading: false // 按钮 loading 状态
     })
 
-    // 当上传文件被改变时
-    const { upImageFileInputChange } = releaseBlog(state)
+    // 发布博客模块
+    const { upImageFileInputChange, removeImage, clickFileAddImg, publishContent } = releaseBlog(state)
 
-    // 点击移除照片
-    const { removeImage } = releaseBlog(state)
-
-    // 点击上传文件的方形框位置
-    const { clickFileAddImg } = releaseBlog(state)
-
-    // 点击发布的按钮
-    const { publishContent } = releaseBlog(state)
-
-    // 获取用户信息
-    const { loadgetUserInfo } = userModular(state)
-
-    // 获取全部博客
-    const { loadgetAllBlogList } = userModular(state)
+    // 用户模块
+    const { loadgetUserInfo, loadgetAllBlogList } = userModular(state)
 
     onMounted(() => {
       loadgetUserInfo() // 获取用户信息

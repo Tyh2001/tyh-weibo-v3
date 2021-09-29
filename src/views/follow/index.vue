@@ -45,14 +45,8 @@ export default {
       blogList: [] // 博客内容
     })
 
-    // 获取用户信息
-    const { loadgetUserInfo } = userModular(state)
-
-    // 头像地址
-    const { userPhotoAvatar } = userModular(state)
-
-    // 获取指定用户博客内容
-    const { loadgetFollowAllBlogList } = userModular(state)
+    // 用户模块
+    const { loadgetUserInfo, userPhotoAvatar, loadgetFollowAllBlogList } = userModular(state)
 
     onMounted(() => {
       loadgetUserInfo() // 获取用户信息

@@ -86,35 +86,11 @@ export default {
       delFollowDisabled: false // 取消关注按钮的禁用状态
     })
 
-    // 用户头像地址
-    const { userPhotoAvatar } = BlogListModular(state, props)
+    const { userPhotoAvatar, releaseTime, followShow, changeDelete, onFollowTa } = BlogListModular(state, props)
 
-    // 博客发布的时间
-    const { releaseTime } = BlogListModular(state, props)
+    const { blogItemImgURL, sayChange, goodChange } = BlogListModular(state)
 
-    // 博客图片地址
-    const { blogItemImgURL } = BlogListModular(state)
-
-    // 是否展示关注和取消关注选项
-    const { followShow } = BlogListModular(state, props)
-
-    // 是否显示删除选项
-    const { changeDelete } = BlogListModular(state, props)
-
-    // 关注用户
-    const { onFollowTa } = BlogListModular(state, props)
-
-    // 取消关注用户
-    const { deleteFollowTa } = BlogListModular(state, props, emit)
-
-    // 删除博客
-    const { deleteBlog } = BlogListModular(state, props, emit)
-
-    // 评论点击
-    const { sayChange } = BlogListModular(state)
-
-    // 点击点赞
-    const { goodChange } = BlogListModular(state)
+    const { deleteFollowTa, deleteBlog } = BlogListModular(state, props, emit)
 
     return {
       ...toRefs(state),

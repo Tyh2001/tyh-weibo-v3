@@ -32,11 +32,7 @@ export default {
     }
   },
   setup (props) {
-    // 头像地址
-    const { userPhotoAvatar } = UserListModular(props)
-
-    // 点击跳转对于的用户首页
-    const { toUserBlog } = UserListModular(props)
+    const { userPhotoAvatar, toUserBlog } = UserListModular(props)
 
     return {
       userPhotoAvatar, // 头像地址
