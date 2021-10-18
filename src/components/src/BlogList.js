@@ -10,7 +10,7 @@ import { Message, Msgbox } from 'element3'
  * 博客列表模块
  * @param { object } state 数据
  * @param { object } props 传递的数据
- * @param { object } emit 想父组件发送数据
+ * @param { object } emit 向父组件发送数据
  * 
  * 1. 用户头像地址
  * 2. 博客发布的时间
