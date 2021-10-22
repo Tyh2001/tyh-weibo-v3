@@ -6,7 +6,6 @@
 基础地址：http://localhost/Virgo_Tyh_PHP/public/index.php/
 
 
-
 ### 注册账号
 
 #### 基本信息

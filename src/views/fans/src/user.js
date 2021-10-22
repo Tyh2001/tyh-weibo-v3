@@ -1,4 +1,4 @@
-import { getFansUserList } from '../../../api/follow'
+import { getFansUserList } from '@/api/follow'
 import qs from 'qs'
 
 /**

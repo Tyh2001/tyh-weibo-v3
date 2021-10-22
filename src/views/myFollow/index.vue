@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import UserList from '../../components/UserList.vue'
+import UserList from '@/components/UserList.vue'
 import { reactive, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import userModular from './src/user'

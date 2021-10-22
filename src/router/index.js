@@ -1,75 +1,75 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { Message } from 'element3'
-import { getStorage } from '../utils/localStorage'
+import { getStorage } from '@/utils/localStorage'
 
 const routes = [
   // 登录
   {
     path: '/user/login',
     name: 'login',
-    component: () => import('../views/login/index.vue'),
+    component: () => import('@/views/login/index.vue'),
     meta: { requiresAuth: false }
   },
   // 注册
   {
     path: '/user/register',
     name: 'register',
-    component: () => import('../views/register/index.vue'),
+    component: () => import('@/views/register/index.vue'),
     meta: { requiresAuth: false }
   },
   // 首页加载模板
   {
     path: '/',
-    component: () => import('../views/layout/index.vue'),
+    component: () => import('@/views/layout/index.vue'),
     meta: { requiresAuth: false },
     children: [
       // 首页
       {
         path: '',
         name: 'home',
-        component: () => import('../views/home/index.vue'),
+        component: () => import('@/views/home/index.vue'),
         meta: { requiresAuth: false }
       },
       // 设置
       {
         path: '/setting',
         name: 'setting',
-        component: () => import('../views/setting/index.vue'),
+        component: () => import('@/views/setting/index.vue'),
         meta: { requiresAuth: true }
       },
       // 我的关注
       {
         path: '/follow',
         name: 'follow',
-        component: () => import('../views/follow/index.vue'),
+        component: () => import('@/views/follow/index.vue'),
         meta: { requiresAuth: true }
       },
       // 我的页面加载模板
       {
         path: '/my/:id',
         redirect: '@/views/my',
-        component: () => import('../views/myLayout/index.vue'),
+        component: () => import('@/views/myLayout/index.vue'),
         meta: { requiresAuth: true },
         children: [
           // 我的页面
           {
             path: '',
             name: 'my',
-            component: () => import('../views/my/index.vue'),
+            component: () => import('@/views/my/index.vue'),
             meta: { requiresAuth: true }
           },
           // 我的关注
           {
             path: '/myFollow/:id',
             name: 'myFollow',
-            component: () => import('../views/myFollow/index.vue'),
+            component: () => import('@/views/myFollow/index.vue'),
             meta: { requiresAuth: true }
           },
           // 我的粉丝
           {
             path: '/fans/:id',
             name: 'fans',
-            component: () => import('../views/fans/index.vue'),
+            component: () => import('@/views/fans/index.vue'),
             meta: { requiresAuth: true }
           }
         ]

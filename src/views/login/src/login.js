@@ -1,6 +1,6 @@
 import { Message } from 'element3'
 import qs from 'qs'
-import { onUserLogin } from '../../../api/user'
+import { onUserLogin } from '@/api/user'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 

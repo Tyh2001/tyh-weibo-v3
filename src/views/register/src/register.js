@@ -1,4 +1,4 @@
-import { onRegister } from '../../../api/user'
+import { onRegister } from '@/api/user'
 import qs from 'qs'
 import { useRouter } from 'vue-router'
 

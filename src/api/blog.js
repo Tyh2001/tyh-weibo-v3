@@ -2,7 +2,7 @@
  * 博客相关
  */
 
-import require from '../utils/require'
+import require from '@/utils/require'
 
 /**
  * 上传用户发布的文字内容

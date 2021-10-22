@@ -2,7 +2,7 @@
  * 关注相关
  */
 
-import require from '../utils/require'
+import require from '@/utils/require'
 
 /**
  * 关注用户

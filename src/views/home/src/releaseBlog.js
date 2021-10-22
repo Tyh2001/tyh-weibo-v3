@@ -1,5 +1,5 @@
 import { Message } from 'element3'
-import { onReleaseBlog } from '../../../api/blog'
+import { onReleaseBlog } from '@/api/blog'
 import userModular from './user'
 
 /**

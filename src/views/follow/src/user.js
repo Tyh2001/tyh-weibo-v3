@@ -1,7 +1,7 @@
-import { getUserInfo } from '../../../api/user'
+import { getUserInfo } from '@/api/user'
 import { computed } from 'vue'
-import url from '../../../utils/url'
-import { getFollowAllBlogList } from '../../../api/blog'
+import url from '@/utils/url'
+import { getFollowAllBlogList } from '@/api/blog'
 
 /**
  * 关注页面模块

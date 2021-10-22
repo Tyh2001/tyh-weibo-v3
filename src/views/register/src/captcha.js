@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { randomNum } from '../../../utils/randomNum'
+import { randomNum } from '@/utils/randomNum'
 
 /**
  * 验证码模块

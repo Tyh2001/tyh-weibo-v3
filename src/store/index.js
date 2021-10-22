@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { setStorage, getStorage, removeStorage } from '../utils/localStorage'
+import { setStorage, getStorage, removeStorage } from '@/utils/localStorage'
 const LOCAL_NAME = 'tyh_user_local'
 
 export default createStore({

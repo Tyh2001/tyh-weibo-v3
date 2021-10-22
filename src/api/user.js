@@ -2,7 +2,7 @@
  * 用户相关
  */
 
-import require from '../utils/require'
+import require from '@/utils/require'
 
 /**
  * 注册账号

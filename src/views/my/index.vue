@@ -93,7 +93,7 @@
 <script>
 import { reactive, toRefs, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
-import BlogList from '../../components/BlogList.vue'
+import BlogList from '@/components/BlogList.vue'
 import followModular from './src/follow'
 import userModular from './src/user'
 import { useRoute } from 'vue-router'

@@ -1,6 +1,6 @@
-import { getUserInfo, changeUserInfo, changeUserPass } from '../../../api/user'
+import { getUserInfo, changeUserInfo, changeUserPass } from '@/api/user'
 import { computed } from 'vue'
-import url from '../../../utils/url'
+import url from '@/utils/url'
 import qs from 'qs'
 import { Message, Msgbox } from 'element3'
 import { useRouter } from 'vue-router'

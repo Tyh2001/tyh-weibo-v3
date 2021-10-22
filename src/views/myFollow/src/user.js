@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { getFollowUserList } from '../../../api/follow'
+import { getFollowUserList } from '@/api/follow'
 
 /**
  * 我的关注列表模块

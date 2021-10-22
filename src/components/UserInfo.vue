@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import userModular from '../views/home/src/user'
+import userModular from '@/views/home/src/user'
 export default {
   name: 'UserInfo',
   props: {

@@ -1,6 +1,6 @@
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
-import { uploadUserPhoto } from '../../../api/user'
+import { uploadUserPhoto } from '@/api/user'
 
 /**
  * 设置页面头像裁切上传模块

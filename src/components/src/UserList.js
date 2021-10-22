@@ -1,4 +1,4 @@
-import url from '../../utils/url'
+import url from '@/utils/url'
 import { useRouter } from 'vue-router'
 
 export default function (props) {

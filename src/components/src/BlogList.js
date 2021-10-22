@@ -1,8 +1,8 @@
 import { computed } from 'vue'
-import url from '../../utils/url'
-import { toDates } from '../../utils/changeTime'
-import { deleteMyBlogList } from '../../api/blog'
-import { onFollowUser, deleteFollowUser } from '../../api/follow'
+import url from '@/utils/url'
+import { toDates } from '@/utils/changeTime'
+import { deleteMyBlogList } from '@/api/blog'
+import { onFollowUser, deleteFollowUser } from '@/api/follow'
 import qs from 'qs'
 import { Message, Msgbox } from 'element3'
 

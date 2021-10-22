@@ -1,6 +1,13 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+const { resolve } = require('path')
 
 export default defineConfig({
-  plugins: [vue()]
+  base: './',
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    },
+  }
 })

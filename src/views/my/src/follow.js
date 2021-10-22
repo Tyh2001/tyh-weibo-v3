@@ -1,4 +1,4 @@
-import { onFollowUser, getFollowUserList, deleteFollowUser } from '../../../api/follow'
+import { onFollowUser, getFollowUserList, deleteFollowUser } from '@/api/follow'
 import { useRoute, useRouter } from 'vue-router'
 import qs from 'qs'
 import { Message } from 'element3'

@@ -1,6 +1,6 @@
-import { getUserInfo } from '../../../api/user'
-import { getAllBlogList } from '../../../api/blog'
-import url from '../../../utils/url'
+import { getUserInfo } from '@/api/user'
+import { getAllBlogList } from '@/api/blog'
+import url from '@/utils/url'
 import { computed } from 'vue'
 
 /**
