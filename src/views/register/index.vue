@@ -76,40 +76,30 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs } from 'vue'
 import captchaModular from './src/captcha'
 import registerModular from './src/register'
-export default {
-  name: 'register',
-  setup () {
-    const state = reactive({
-      captchaCode: '', // 验证码随机数
-      registerBtnLoading: false, // 注册按钮禁用状态
-      // 注册表单
-      registerForm: {
-        username: '',
-        password: '',
-        password2: '',
-        mail: '',
-        captcha: ''
-      }
-    })
-
-    // 验证码模块
-    const { captchaImgURL, changeCaptchaImg } = captchaModular(state)
-
-    // 注册模块
-    const { onSubmitRegister } = registerModular(state)
-
-    return {
-      ...toRefs(state),
-      captchaImgURL, // 验证码随机地址
-      changeCaptchaImg, // 点击切换新的验证码
-      onSubmitRegister // 注册
-    }
+const state = reactive({
+  captchaCode: '', // 验证码随机数
+  registerBtnLoading: false, // 注册按钮禁用状态
+  // 注册表单
+  registerForm: {
+    username: '',
+    password: '',
+    password2: '',
+    mail: '',
+    captcha: ''
   }
-}
+})
+
+const { registerForm, registerBtnLoading } = toRefs(state)
+
+// 验证码模块
+const { captchaImgURL, changeCaptchaImg } = captchaModular(state)
+
+// 注册模块
+const { onSubmitRegister } = registerModular(state)
 </script>
 
 <style lang='less' scoped>

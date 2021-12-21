@@ -169,61 +169,54 @@
   </el-dialog>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import userModular from './src/user'
 import cropperjsModular from './src/cropperjs'
-export default {
-  name: 'setting',
-  setup () {
-    const store = useStore()
-    const state = reactive({
-      userInfo: store.state.userInfo, // 用户信息
-      changeUserInfoBloon: false, // 展示用户信息和编辑信息的切换状态
-      feelingList: ['单身', '已婚', '订婚', '暧昧中', '求交往', '暗恋中', '分居', '离异', '保密'], // 感情状况
-      workList: ['计算机/互联网/通信', '生产/工艺/制造', '金融/银行/投资/保险', '商业/服务业/个体经营', '文化/广告/传媒', '娱乐/艺术/表演', '律师/法务', '教育/培训', '公务员/行政/事业单位', '演员/歌手', '自由职业', '模特', '空姐', '学生', '其他'],
-      userForm: {}, // 个人信息
-      // 修改密码
-      changePass: {
-        oldPass: '',
-        newPass2: ''
-      },
-      changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态
-      changeUserPassBtnLoading: false, // 点击修改密码的按钮禁用状态
-      cropper: null, // 头像裁切器实例
-      UploadfileImgUrl: '', // 头像裁切器中图片地址
-      CropperImgDialog: false, // 执行头像裁切的对话框
-      upImgLoginDialog: false // 点击上传头像的按钮禁用状态
-    })
+const store = useStore()
+const state = reactive({
+  userInfo: store.state.userInfo, // 用户信息
+  changeUserInfoBloon: false, // 展示用户信息和编辑信息的切换状态
+  feelingList: ['单身', '已婚', '订婚', '暧昧中', '求交往', '暗恋中', '分居', '离异', '保密'], // 感情状况
+  workList: ['计算机/互联网/通信', '生产/工艺/制造', '金融/银行/投资/保险', '商业/服务业/个体经营', '文化/广告/传媒', '娱乐/艺术/表演', '律师/法务', '教育/培训', '公务员/行政/事业单位', '演员/歌手', '自由职业', '模特', '空姐', '学生', '其他'],
+  userForm: {}, // 个人信息
+  // 修改密码
+  changePass: {
+    oldPass: '',
+    newPass2: ''
+  },
+  changeUserInfoBtnLoading: false, // 点击修改资料的按钮禁用状态
+  changeUserPassBtnLoading: false, // 点击修改密码的按钮禁用状态
+  cropper: null, // 头像裁切器实例
+  UploadfileImgUrl: '', // 头像裁切器中图片地址
+  CropperImgDialog: false, // 执行头像裁切的对话框
+  upImgLoginDialog: false // 点击上传头像的按钮禁用状态
+})
 
-    // 用户相关
-    const { loadgetUserInfo, userPhotoAvatar, SaveData, SaveDataNewPass, outLogin } = userModular(state)
+const {
+  userInfo,
+  CropperImgDialog,
+  changeUserInfoBloon,
+  userForm,
+  changeUserInfoBtnLoading,
+  changePass,
+  changeUserPassBtnLoading,
+  UploadfileImgUrl,
+  upImgLoginDialog
+} = toRefs(state)
 
-    // 头像裁切
-    const fileInput = ref(null)
-    const cropperImg = ref(null)
-    const { onChangeFileInp, dialogOpened, dialogClosed, ToUploadPhoto } = cropperjsModular(state)
+// 用户相关
+const { loadgetUserInfo, userPhotoAvatar, SaveData, SaveDataNewPass, outLogin } = userModular(state)
 
-    onMounted(() => {
-      loadgetUserInfo() // 获取用户资料
-    })
+// 头像裁切
+const fileInput = ref(null)
+const cropperImg = ref(null)
+const { onChangeFileInp, dialogOpened, dialogClosed, ToUploadPhoto } = cropperjsModular(state)
 
-    return {
-      ...toRefs(state),
-      userPhotoAvatar, // 头像地址
-      SaveData, // 修改资料
-      SaveDataNewPass, // 修改密码
-      outLogin, // 退出登录
-      onChangeFileInp, // 文本框被改变时
-      fileInput, // 文本框 dom 节点
-      dialogOpened, // 当头像裁切器对话框完全展示时候的回调
-      cropperImg, // 裁切器中的图片 dom 节点
-      dialogClosed, // 当头像裁切器对话框完全关闭的时候
-      ToUploadPhoto // 上传文件
-    }
-  }
-}
+onMounted(() => {
+  loadgetUserInfo() // 获取用户资料
+})
 </script>
 
 <style lang='less' scoped>

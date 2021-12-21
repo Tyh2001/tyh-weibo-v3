@@ -19,34 +19,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import UserList from '@/components/UserList.vue'
 import { reactive, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import userModular from './src/user'
-export default {
-  name: 'myFollow',
-  components: {
-    UserList
-  },
-  setup () {
-    const state = reactive({
-      userInfo: useStore().state.userInfo, // 用户信息
-      myFollowUser: [] // 我的关注列表
-    })
+const state = reactive({
+  userInfo: useStore().state.userInfo, // 用户信息
+  myFollowUser: [] // 我的关注列表
+})
 
-    // 获取我的关注列表
-    const { loadgetFollowUserList } = userModular(state)
+const { myFollowUser, userInfo } = toRefs(state)
 
-    onMounted(() => {
-      loadgetFollowUserList() // 获取我的关注列表
-    })
+// 获取我的关注列表
+const { loadgetFollowUserList } = userModular(state)
 
-    return {
-      ...toRefs(state)
-    }
-  }
-}
+onMounted(() => {
+  loadgetFollowUserList() // 获取我的关注列表
+})
 </script>
 
 <style lang='less' scoped>

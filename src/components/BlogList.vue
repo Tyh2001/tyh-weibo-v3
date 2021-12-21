@@ -66,54 +66,39 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import BlogListModular from './src/BlogList'
-export default {
-  name: 'BlogList',
-  props: {
-    // 博客内容
-    blogItem: {
-      type: Object,
-      required: true
-    }
-  },
-  setup (props, { emit }) {
-    const state = reactive({
-      userInfo: useStore().state.userInfo, // 用户信息
-      upFollowDisabled: false, // 关注按钮的禁用状态
-      delFollowDisabled: false // 取消关注按钮的禁用状态
-    })
-
-    const {
-      userPhotoAvatar,
-      releaseTime,
-      followShow,
-      changeDelete,
-      onFollowTa,
-      blogItemImgURL,
-      sayChange,
-      goodChange,
-      deleteFollowTa,
-      deleteBlog
-    } = BlogListModular(state, props, emit)
-
-    return {
-      ...toRefs(state),
-      userPhotoAvatar, // 用户头像地址
-      releaseTime, // 博客发布的时间
-      blogItemImgURL, // 博客图片地址
-      followShow, // 是否展示关注和取消关注选项
-      changeDelete, // 是否显示删除选项
-      onFollowTa, // 关注
-      deleteFollowTa, // 取消关注
-      deleteBlog, // 删除博客
-      sayChange, // 评论点击
-      goodChange // 点击点赞
-    }
+const props = defineProps({
+  // 博客内容
+  blogItem: {
+    type: Object,
+    required: true
   }
-}
+})
+const emit = defineEmits(['loadBlogList'])
+
+const state = reactive({
+  userInfo: useStore().state.userInfo, // 用户信息
+  upFollowDisabled: false, // 关注按钮的禁用状态
+  delFollowDisabled: false // 取消关注按钮的禁用状态
+})
+
+const { userInfo, upFollowDisabled } = toRefs(state)
+
+const {
+  userPhotoAvatar,
+  releaseTime,
+  followShow,
+  changeDelete,
+  onFollowTa,
+  blogItemImgURL,
+  sayChange,
+  goodChange,
+  deleteFollowTa,
+  deleteBlog
+} = BlogListModular(state, props, emit)
 </script>
 
 <style lang='less' scoped>

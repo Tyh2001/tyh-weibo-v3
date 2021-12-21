@@ -90,62 +90,44 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '@/components/BlogList.vue'
 import followModular from './src/follow'
 import userModular from './src/user'
 import { useRoute } from 'vue-router'
-export default {
-  name: 'my',
-  components: {
-    BlogList
-  },
-  setup () {
-    const route = useRoute()
-    const state = reactive({
-      userForm: {},
-      userInfo: useStore().state.userInfo, // 用户信息
-      userBlogList: [], // 博客列表
-      onFollowChange: false, // 是否关注
-      followBtnLoading: false // 点击关注按钮禁用状态
-    })
+const route = useRoute()
+const state = reactive({
+  userForm: {},
+  userInfo: useStore().state.userInfo, // 用户信息
+  userBlogList: [], // 博客列表
+  onFollowChange: false, // 是否关注
+  followBtnLoading: false // 点击关注按钮禁用状态
+})
 
-    // 用户相关模块
-    const { registerTime, loadgetUserInfo, userPhotoAvatar, loadgetAllBlogList, showFollowBtn } = userModular(state)
+const { userForm, userBlogList } = toRefs(state)
 
-    // 关注模块
-    const { loadgetFollowUserList, changeFollowTa, deleteFollowTa, goFansWebList, goFollowsWebList } = followModular(state)
+// 用户相关模块
+const { registerTime, loadgetUserInfo, userPhotoAvatar, loadgetAllBlogList, showFollowBtn } = userModular(state)
 
-    // 监视路由的变化，如果发生变化就重新加载内容
-    // 因为这里防止进入其他人的主页时候 再点击自己的博客不发生变化的问题
-    watch(() => route, (count, prevCount) => {
-      if (route.params.id) {
-        loadgetUserInfo()
-        loadgetAllBlogList()
-      }
-    })
+// 关注模块
+const { loadgetFollowUserList, changeFollowTa, deleteFollowTa, goFansWebList, goFollowsWebList } = followModular(state)
 
-    onMounted(() => {
-      loadgetFollowUserList() // 获取我的关注列表
-      loadgetAllBlogList()   // 获取指定用户博客内容
-      loadgetUserInfo() // 获取用户信息
-    })
-
-    return {
-      ...toRefs(state),
-      registerTime, // 将时间戳转换为正常的时间对象格式
-      userPhotoAvatar, // 头像地址
-      showFollowBtn, // 关注展示状态
-      changeFollowTa, // 关注
-      deleteFollowTa, // 取消关注
-      loadgetAllBlogList, // 获取指定用户博客内容
-      goFansWebList, // 去粉丝页面
-      goFollowsWebList // 去关注页面
-    }
+// 监视路由的变化，如果发生变化就重新加载内容
+// 因为这里防止进入其他人的主页时候 再点击自己的博客不发生变化的问题
+watch(() => route, (count, prevCount) => {
+  if (route.params.id) {
+    loadgetUserInfo()
+    loadgetAllBlogList()
   }
-}
+})
+
+onMounted(() => {
+  loadgetFollowUserList() // 获取我的关注列表
+  loadgetAllBlogList()   // 获取指定用户博客内容
+  loadgetUserInfo() // 获取用户信息
+})
 </script>
 
 <style lang='less' scoped>

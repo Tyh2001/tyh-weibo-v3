@@ -1,3 +1,3 @@
-const url = 'https://tianyuhao.icu/backstage/virgo_tyh_php/public'
+const url = 'http://tianyuhao.icu/backstage/virgo_tyh_php/public'
 
 export default url

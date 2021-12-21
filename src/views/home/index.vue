@@ -89,53 +89,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, onMounted, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '@/components/BlogList.vue'
 import UserInfo from '@/components/UserInfo.vue'
 import releaseBlog from './src/releaseBlog'
 import userModular from './src/user'
-export default {
-  name: 'home',
-  components: {
-    BlogList,
-    UserInfo
-  },
-  setup () {
-    const state = reactive({
-      blogText: '', // 发布博客文本框内的文字
-      changeBtnLoading: false, // 发布按钮禁用状态
-      user: {}, // 用户信息
-      upLoadImagesFileArray: [], // 需要上传文件的数组
-      imagesList: [], // 需要展示的的图片
-      userInfo: useStore().state.userInfo, // 用户信息
-      blogList: [], // 全部博客
-      imgfile: null, // input dome 节点
-      fullscreenLoading: false // 按钮 loading 状态
-    })
+const state = reactive({
+  blogText: '', // 发布博客文本框内的文字
+  changeBtnLoading: false, // 发布按钮禁用状态
+  user: {}, // 用户信息
+  upLoadImagesFileArray: [], // 需要上传文件的数组
+  imagesList: [], // 需要展示的的图片
+  userInfo: useStore().state.userInfo, // 用户信息
+  blogList: [], // 全部博客
+  imgfile: null, // input dome 节点
+  fullscreenLoading: false // 按钮 loading 状态
+})
 
-    // 发布博客模块
-    const { upImageFileInputChange, removeImage, clickFileAddImg, publishContent } = releaseBlog(state)
+const { blogText, imagesList, changeBtnLoading, blogList, fullscreenLoading, userInfo, user } = toRefs(state)
 
-    // 用户模块
-    const { loadgetUserInfo, loadgetAllBlogList } = userModular(state)
+// 发布博客模块
+const { upImageFileInputChange, removeImage, clickFileAddImg, publishContent } = releaseBlog(state)
 
-    onMounted(() => {
-      loadgetUserInfo() // 获取用户信息
-      loadgetAllBlogList() // 获取全部博客
-    })
+// 用户模块
+const { loadgetUserInfo, loadgetAllBlogList } = userModular(state)
 
-    return {
-      ...toRefs(state),
-      removeImage, // 点击移除照片
-      upImageFileInputChange, // 当上传文件被改变时
-      clickFileAddImg, // 点击上传文件的方形框位置
-      publishContent, // 点击发布的按钮
-      loadgetAllBlogList // 获取全部博客
-    }
-  }
-}
+onMounted(() => {
+  loadgetUserInfo() // 获取用户信息
+  loadgetAllBlogList() // 获取全部博客
+})
 </script>
 
 <style lang="less" scoped>

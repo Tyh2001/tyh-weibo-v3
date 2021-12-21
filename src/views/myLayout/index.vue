@@ -52,30 +52,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-export default {
-  name: 'myLayout',
-  setup () {
-    const route = useRoute()
-    const state = reactive({
-      userInfo: useStore().state.userInfo // 用户信息
-    })
+const route = useRoute()
+const state = reactive({
+  userInfo: useStore().state.userInfo // 用户信息
+})
 
-    // 高亮显示左侧菜单
-    function changeHeigthColorShow (url) {
-      if (url === route.name) {
-        return {
-          color: '#409eff'
-        }
-      }
-    }
+const { userInfo } = toRefs(state)
 
+// 高亮显示左侧菜单
+function changeHeigthColorShow (url) {
+  if (url === route.name) {
     return {
-      ...toRefs(state),
-      changeHeigthColorShow // 高亮显示左侧菜单
+      color: '#409eff'
     }
   }
 }

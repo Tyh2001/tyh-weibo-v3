@@ -49,43 +49,34 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, toRefs } from 'vue'
 import loginModular from './src/login'
-export default {
-  name: 'login',
-  setup () {
-    const state = reactive({
-      loginDialog: ref(false), // 按钮加载状态
-      // 数据
-      loginForm: {
-        username: '',
-        password: ''
-      },
-      // 表单验证
-      rulesLogin: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 6, message: '长度至少6个字符', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, message: '长度至少8个字符', trigger: 'blur' }
-        ]
-      }
-    })
-
-    // 点击登录按钮
-    const form = ref(null)
-    const { onLogin } = loginModular(state)
-
-    return {
-      ...toRefs(state),
-      form, // dom 节点
-      onLogin // 点击登录按钮
-    }
+const state = reactive({
+  loginDialog: ref(false), // 按钮加载状态
+  // 数据
+  loginForm: {
+    username: '',
+    password: ''
+  },
+  // 表单验证
+  rulesLogin: {
+    username: [
+      { required: true, message: '请输入用户名', trigger: 'blur' },
+      { min: 6, message: '长度至少6个字符', trigger: 'blur' }
+    ],
+    password: [
+      { required: true, message: '请输入密码', trigger: 'blur' },
+      { min: 6, message: '长度至少8个字符', trigger: 'blur' }
+    ]
   }
-}
+})
+
+const { loginForm, rulesLogin, loginDialog } = toRefs(state)
+
+// 点击登录按钮
+const form = ref(null)
+const { onLogin } = loginModular(state)
 </script>
 
 <style lang="less" scoped>

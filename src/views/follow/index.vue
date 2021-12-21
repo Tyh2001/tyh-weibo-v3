@@ -25,40 +25,28 @@
   </div>
 </template>
 
-<script>
-import { reactive, toRefs, onMounted } from 'vue'
+<script setup>
+import { reactive, onMounted, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import BlogList from '@/components/BlogList.vue'
 import userModular from './src/user'
 import UserInfo from '@/components/UserInfo.vue'
-export default {
-  name: 'follow',
-  components: {
-    BlogList,
-    UserInfo
-  },
-  setup () {
-    const state = reactive({
-      user: {}, // 用户信息
-      fullscreenLoading: false, // 页面加载状态展示
-      userInfo: useStore().state.userInfo, // 用户信息
-      blogList: [] // 博客内容
-    })
+const state = reactive({
+  user: {}, // 用户信息
+  fullscreenLoading: false, // 页面加载状态展示
+  userInfo: useStore().state.userInfo, // 用户信息
+  blogList: [] // 博客内容
+})
 
-    // 用户模块
-    const { loadgetUserInfo, userPhotoAvatar, loadgetFollowAllBlogList } = userModular(state)
+const { blogList, fullscreenLoading, user, userInfo } = toRefs(state)
 
-    onMounted(() => {
-      loadgetUserInfo() // 获取用户信息
-      loadgetFollowAllBlogList() // 获取指定用户博客内容
-    })
+// 用户模块
+const { loadgetUserInfo, userPhotoAvatar, loadgetFollowAllBlogList } = userModular(state)
 
-    return {
-      ...toRefs(state),
-      userPhotoAvatar // 头像地址
-    }
-  }
-}
+onMounted(() => {
+  loadgetUserInfo() // 获取用户信息
+  loadgetFollowAllBlogList() // 获取指定用户博客内容
+})
 </script>
 
 <style lang='less' scoped>

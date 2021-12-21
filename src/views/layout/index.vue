@@ -26,28 +26,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
-export default {
-  name: 'layout',
-  setup () {
-    const state = reactive({
-      activeIndex: '1',
-      userInfo: useStore().state.userInfo // 用户信息
-    })
+const state = reactive({
+  activeIndex: '1',
+  userInfo: useStore().state.userInfo // 用户信息
+})
 
-    // 点击我的图标
-    const toMyBlogList = computed(() => {
-      return state.userInfo ? '/my/' + state.userInfo.id : '/user/login'
-    })
-
-    return {
-      ...toRefs(state),
-      toMyBlogList // 点击我的图标
-    }
-  }
-}
+// 点击我的图标
+const toMyBlogList = computed(() => {
+  return state.userInfo ? '/my/' + state.userInfo.id : '/user/login'
+})
 </script>
 
 <style lang='less' scoped>

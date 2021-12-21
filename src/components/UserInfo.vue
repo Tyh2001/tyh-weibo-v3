@@ -24,34 +24,25 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import userModular from '@/views/home/src/user'
-export default {
-  name: 'UserInfo',
-  props: {
-    // 用户资料
-    user: {
-      type: Object
-    },
-    // 用户信息
-    userInfo: {
-      type: Object
-    },
-    // 是否登录
-    logBoolean: {
-      type: Boolean,
-      default: true
-    }
+const props = defineProps({
+  // 用户资料
+  user: {
+    type: Object
   },
-  setup (props) {
-    // 头像地址
-    const { userPhotoAvatar } = userModular(props)
-
-    return {
-      userPhotoAvatar
-    }
+  // 用户信息
+  userInfo: {
+    type: Object
+  },
+  // 是否登录
+  logBoolean: {
+    type: Boolean,
+    default: true
   }
-}
+})
+// 头像地址
+const { userPhotoAvatar } = userModular(props)
 </script>
 
 <style lang="less" scoped>

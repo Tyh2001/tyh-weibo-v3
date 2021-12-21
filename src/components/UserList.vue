@@ -14,32 +14,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import UserListModular from './src/UserList'
-export default {
-  name: 'UserList',
-  props: {
-    // 每一项用户信息
-    item: {
-      required: true,
-      type: Object
-    },
-    // 是否为粉丝列表
-    isFans: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
+const props = defineProps({
+  // 每一项用户信息
+  item: {
+    required: true,
+    type: Object
   },
-  setup (props) {
-    const { userPhotoAvatar, toUserBlog } = UserListModular(props)
-
-    return {
-      userPhotoAvatar, // 头像地址
-      toUserBlog // 点击跳转对于的用户首页
-    }
+  // 是否为粉丝列表
+  isFans: {
+    type: Boolean,
+    default: false
   }
-}
+})
+
+const { userPhotoAvatar, toUserBlog } = UserListModular(props)
 </script>
 
 <style lang='less' scoped>

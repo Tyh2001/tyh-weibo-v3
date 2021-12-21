@@ -2,14 +2,14 @@
   <div id="fans">
     <template v-if="myFansList.length">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="'/my/' + userInfo.id">
+        <el-breadcrumb-item :to="'/my/' + state.userInfo.id">
           个人主页
         </el-breadcrumb-item>
         <el-breadcrumb-item>我的粉丝</el-breadcrumb-item>
       </el-breadcrumb>
 
       <UserList
-        v-for="(myfansUserItem, index) in myFansList"
+        v-for="(myfansUserItem, index) in state.myFansList"
         :key="index"
         :isFans="true"
         :item="myfansUserItem"
@@ -20,34 +20,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import UserList from '@/components/UserList.vue'
 import { reactive, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import userModular from './src/user'
-export default {
-  name: 'fans',
-  components: {
-    UserList
-  },
-  setup () {
-    const state = reactive({
-      userInfo: useStore().state.userInfo, // 用户信息
-      myFansList: [] // 我的关注列表
-    })
+const state = reactive({
+  userInfo: useStore().state.userInfo, // 用户信息
+  myFansList: [] // 我的关注列表
+})
 
-    // 获取我的粉丝列表
-    const { loadgetFansUserList } = userModular(state)
+const { userInfo, myFansList } = toRefs(state)
 
-    onMounted(() => {
-      loadgetFansUserList() // 获取我的粉丝列表
-    })
+// 获取我的粉丝列表
+const { loadgetFansUserList } = userModular(state)
 
-    return {
-      ...toRefs(state)
-    }
-  }
-}
+onMounted(() => {
+  loadgetFansUserList() // 获取我的粉丝列表
+})
 </script>
 
 <style lang='less' scoped>

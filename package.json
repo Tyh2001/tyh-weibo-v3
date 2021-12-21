@@ -18,8 +18,8 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.6.1",
+    "@vitejs/plugin-vue": "^2.0.0",
     "@vue/compiler-sfc": "^3.2.6",
-    "vite": "^2.5.4"
+    "vite": "^2.7.2"
   }
 }
